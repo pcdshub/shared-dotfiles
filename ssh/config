@@ -1,0 +1,867 @@
+# This is a sample ssh configuration for accessing PCDS/ECS hosts.
+#
+# vi: ft=sshconfig shiftwidth=4 tabstop=4 expandtab
+
+Host github
+    HostName github.com
+    ForwardX11 no
+    PreferredAuthentications=publickey
+
+Host !github
+    ForwardAgent yes
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    XAuthLocation /opt/X11/bin/xauth
+    PreferredAuthentications=publickey
+
+Host pslogin
+    HostName pslogin.slac.stanford.edu
+    # ControlMaster can allow you to multiplex pslogin connections!
+    # ControlMaster auto
+    # ControlPath ~/.SSH-%r@%h:%p
+
+Host pslogin-arch
+    HostName pslogin.slac.stanford.edu
+    # Archiver management interface:
+    # use http://localhost:17665/mgmt/ui/index.html
+    LocalForward 17665 pscaa02:17665
+    # Archiver API for programmatic access:
+    LocalForward 17668 pscaa02:17668
+    # Power monitoring: http://localhost:8089/ion
+    LocalForward 8089 powermon:80
+    # recipe metering: http://localhost:8090/RecipeAnalytics/Operations/Status3
+    LocalForward 8090 recipesrv:80
+
+Host psbuild-rhel7
+    HostName psbuild-rhel7-01
+    ProxyCommand ssh -XT pslogin nc %h %p
+
+Host psdev
+    HostName psdev
+    ProxyCommand ssh -XT pslogin nc %h %p
+
+# plcprog-console access
+Host psbuild-plc 
+    HostName psbuild-rhel7
+    # This following ProxyCommand line may not be required depending on your ssh version:
+    ProxyCommand ssh -XT pslogin nc %h %p
+    LocalForward 3389 plcprog-console:3389
+ 
+# pscron - used for scheduling cron job tasks
+Host pscron
+    ProxyCommand ssh -XT pslogin nc %h %p
+
+# Additional hosts from netconfig, hopping through psbuild-rhel7:
+Host ctl-crix-cam-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-kfe-cam-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-kfe-cam-02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-kfe-misc-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-kfe-mot-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-kfe-vac-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-ip1-srv01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-ip1-srv02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-ip1-srv05
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-ip1-srv06
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-ip1-srv07
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-lhn-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-lhn-04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-lln-03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-srv01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-srv02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-las-srv03ctl-lfe-cam-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-lfe-cam-02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-lfe-misc-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-lfe-mot-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-lfe-vac-01ctl-rix-cam-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-rix-cam-02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-rix-cam-03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-rix-mot-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-rix-mpod-fim-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-rix-vac-01ctl-tmo-cam-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-tmo-fim-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-tmo-misc-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-tmo-mot-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-tmo-vac-01ctl-tst-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ctl-tst-pgp01cxi-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-cxi-pgp04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-det-jungfrau
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-det-pgp01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-det-pnccd01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-det-pnccd02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-det-standalonedaq-mec-cam01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-mec-misc01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-mec-pgp02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-mfx-pgp01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-mfx-pgp02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-rix-andor-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-sxr-pgp01daq-tmo-andor-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-tst-dev03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-tst-dev06
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-xcs-pgp01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-xcs-pgp02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-xpp-pgp01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host daq-xpp-pgp02drp-ued-cmp001
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-gige01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-gige02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-gige03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-lampenc01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-misc01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-mot01ioc-amo-slits
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-uniq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-amo-vacuum
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-aux-mon
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-cam1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-cam2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-cam4ioc-cxi-cam5
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-dg1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-jungfrau01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-lassrv2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-misc1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-mot1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-protura1ioc-cxi-protura2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-qadc
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-rec03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-rec04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-sc1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-sc2ioc-cxi-usr1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-usrmot2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-vacuum
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-cxi-wave8
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-det-cpci01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-det-pnccd01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-det-pnccd02ioc-det-portable1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-det-portable2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-gasdet-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-kmono-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-misc1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-nfov
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-rec01ioc-fee-rec02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-rec03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-rec04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-srv01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-srv02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-hpl-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-hpl-02ioc-hpl-03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-hpl-04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-hpl-05
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-kfe-mpod-gmd-xgmd
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-cxi-srv05
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-fstiming
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-mec-evr01ioc-las-mec-evr02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-mec-evr03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-mec-srv06
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-srv01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-srv02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-las-srv04ioc-las-xcs-srv04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-lfe-gasdet-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-lfe-kmono-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-lfe-srv01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-cam04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-evg
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-evr01ioc-mec-gige01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-imb02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-ipimb01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-ipmb01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-las-gige01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-las-gige02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-las-gige03ioc-mec-las-gige04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-lasmot1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-lpl01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-misc01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-mot3
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-opal01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-qadcioc-mec-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-vacuum
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mec-wave8
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-cam01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-cam02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-hera
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-misc01ioc-mfx-mot1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-rec02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-table
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-tfs
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-usr01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-mfx-vacuumioc-mfx-wave8
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxd-spec
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-acromag
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-cam1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-evr01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-exp1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-exp2ioc-sxr-gige01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-gige02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-gige03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-gmd
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-gmd-acq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-motor
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-sxr-rec01ioc-sxr-vacuum
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-thz-linux1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tmo-mpod-fim-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tmo-mpod-fim-02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tmo-mpod-portable02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tmo-mpod01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tmo-mpod02ioc-tst-01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-05
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-06
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-08ioc-tst-12
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-13
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-evg
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-fels01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-metrology
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-mpod-wiener
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-rec01ioc-tst-rec02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-rec03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-rec10
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-tst-rhel7
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-ued-ccd01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-und-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-gige01ioc-xcs-misc1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-mot1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-rec02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-rec03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-rec04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-sndioc-xcs-srv01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-user1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-user2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-vacuum
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xcs-wave8
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-gige01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-gige02ioc-xpp-gon
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-ipimb
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-las01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-mot01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-osc01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-rec02ioc-xpp-rec03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-rob01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-usr01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-vacuum
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xpp-wave8
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-hxx-motvac1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-mec-mot1ioc-xrt-mec-mot2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-mfxmot1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-misc01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-misc02
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-mxtmirror
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-rec01
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-rec02ioc-xrt-rec03
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-rec04
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-rec05
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-rec06
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-rec07
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-vacuum
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-wave8ioc-xrt-xcsmisc1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-xcsmot1
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-xrt-xcsmot2
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-monitor
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host tst-desktop
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xcs-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xpp-controlcxi-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host cxi-console-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host det-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host hpl-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host kfe-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host las-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host lfe-consolemcc-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-console-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-console-ics
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-console-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host plcprog-consolerix-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host rix-console-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host tmo-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xcs-console
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xcs-console-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xtod-console-icscon-ics-xpp-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host cxi-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-control-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-control-ics
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-control-ipmirix-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host tmo-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host tmo-control-ics
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host tmo-control-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ued-control-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xcs-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xcs-control-ipmixpp-control
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xpp-control-ics
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xpp-control-ipmicon-ics-xpp-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host cxi-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host cxi-daq-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-fee-gasdet-daq-fez
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-lfe-gasdet-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host ioc-lfe-kmono-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-daqmec-daq-fez
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-daq-ics
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mec-daq-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-daq-fez
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host mfx-daq-ics
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host power-tst-daqrix-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host rix-daq-drp
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host swh-det-b57-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host swh-ued-b44-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host swh-xpp-h3-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host swh-xpp-mezz-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host switch-amo-srvroom-daqswitch-cxi-mezz-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host switch-mec-mezz-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host switch-mfx-mezz-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host switch-sxr-srvroom-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host switch-xcs-mezz-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host tmo-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host tmo-daq-ipmiued-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xcs-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xpp-daq
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xpp-daq-fez
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xpp-daq-ics
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host xpp-daq-ipmi
+    ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
