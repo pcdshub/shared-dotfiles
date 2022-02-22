@@ -34,6 +34,7 @@ Host pslogin-arch
     LocalForward 8090 recipesrv:80
 
 Host psbuild-rhel7
+    ForwardAgent yes
     HostName psbuild-rhel7-01
     ProxyCommand ssh -XT pslogin nc %h %p
 
