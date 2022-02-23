@@ -35,7 +35,7 @@ alias ..9='cd ../../../../../../../../..'
 sshcd() { 
     host=$1;
     shift;
-    command="$@";
+    command="$*";
     ssh -t "$host" "
         cd '${PWD}'
         echo 'Current working directory: $PWD'
@@ -54,13 +54,13 @@ alias psb='sshcd psbuild-rhel7'
 
 # Watch a log file
 ioclog() {
-  IOC_NAME=$1
-  tail -n 50 -f /reg/d/iocData/$IOC_NAME/iocInfo/ioc.log
+  ioc_name=$1
+  tail -n 50 -f "/reg/d/iocData/$ioc_name/iocInfo/ioc.log"
 }
 
 find_ioc() {
-  IOC_NAME=$1
-  grep -i -e $IOC_NAME /cds/data/iocData/.all_iocs/iocs.txt
+  ioc_name=$1
+  grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
 }
 
 list_all_iocs() {
@@ -87,8 +87,7 @@ alias mec3="hpy3 mec"
 hpy3() {
   hutch="${1}"
   shift
-  args="$@"
-  "/reg/g/pcds/pyps/apps/hutch-python/${hutch}/${hutch}python" ${args}
+  "/reg/g/pcds/pyps/apps/hutch-python/${hutch}/${hutch}python" "$@"
 }
 
 
@@ -97,11 +96,11 @@ hpy3() {
 #   only if it encounters an error.  This could be used, for example, with
 #   typhos by way of "ipython_debug_entrypoint typhos ..typhos args.."
 ipython_debug_entrypoint() {
-    cmd=$(which $1)
+    cmd=$(which "$1")
     shift
-    if [ ! -z "$cmd" ]; then
+    if [ -n "$cmd" ]; then
         set -x
-        ipython -i --pdb $cmd -- $@
+        ipython -i --pdb "$cmd" -- "$@"
         set +x
     fi
 }
@@ -120,6 +119,6 @@ alias sudo='sudo '
 #
 # Add some more aliases or modify the ones above to fit your needs.
 # Also, use shellcheck to see that you're writing scripts with good syntax.
-# shellcheck is available in our pcds Python environment.
+# The tool shellcheck is available in our pcds Python environment.
 #
 # For bash help, see https://tldp.org/LDP/Bash-Beginners-Guide/html/

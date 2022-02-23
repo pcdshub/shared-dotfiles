@@ -17,7 +17,7 @@ export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\
 export EDITOR=vim
 
 # If you have aliases defined, let's use them:
-[ -f $HOME/.bash_aliases ] && source $HOME/.bash_aliases
+[ -f "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
 # If you have additional aliases to add, put them in that file!
 
 # *****************************
