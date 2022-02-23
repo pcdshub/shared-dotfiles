@@ -3,36 +3,22 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# ***********
-# **  SSH  **
-# ***********
+# *******************************
+# ** Prompt and basic settings **
+# *******************************
 
-# sshcd - ssh to a host, retaining your current directory
-#   Usage:   sshcd hostname [optional command to run]
-#   Example: sshcd lfe-console ls -l
-sshcd() { 
-    host=$1;
-    shift;
-    command="$@";
-    ssh -t "$host" "
-        cd '${PWD}'
-        echo 'Current working directory: $PWD'
-        ${command}
-        bash
-    ";
-}
+# The following sets up your prompt to show at least the host
+export PS1='\[\e[0;31m\][\u@\h  \W]\$\[\e[m\] '
+export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
 
-# psb:
-#   psbuild-rhel7 is one of the most common hosts you will use.
-#   This shortcut ``psb`` will allow you to quickly go to that host while
-#   retaining your current working directory.
-alias psb='sshcd psbuild-rhel7'
+# Your default editor will be set to vim.
+#  * Having trouble using it? Try running `vimtutor`.
+#  * Having trouble exiting it? Type ":wq!" to save and quit.
+export EDITOR=vim
 
-# ** IOCs **
-# Watch a log file
-ioclog() {
-  tail -n 50 -f /reg/d/iocData/$1/iocInfo/ioc.log
-}
+# If you have aliases defined, let's use them:
+[ -f $HOME/.bash_aliases ] && source $HOME/.bash_aliases
+# If you have additional aliases to add, put them in that file!
 
 # *****************************
 # ** Python and hutch-python **
@@ -40,25 +26,6 @@ ioclog() {
 
 # Setup happi
 export HAPPI_CFG=/cds/group/pcds/pyps/apps/hutch-python/device_config/happi.cfg
-
-# Python 3 hutch python shortcuts
-# Quickly start a hutch-python session for a given hutch with ``hpy3 (hutchname)``
-hpy3() {
-  hutch="${1}"
-  shift
-  args="$@"
-  "/reg/g/pcds/pyps/apps/hutch-python/${hutch}/${hutch}python" ${args}
-}
-
-# These are shortcuts for individual hutches to start hutch-python:
-alias tmo3="hpy3 tmo"
-alias txi3="hpy3 txi"
-alias rix3="hpy3 rix"
-alias xpp3="hpy3 xpp"
-alias xcs3="hpy3 xcs"
-alias mfx3="hpy3 mfx"
-alias cxi3="hpy3 cxi"
-alias mec3="hpy3 mec"
 
 # **************************************************
 # ** External scripts with common useful settings **
@@ -109,5 +76,21 @@ pathmunge /reg/g/pcds/engineering_tools/latest-released/scripts
 #  * General tools of use to ECS engineers
 #    For documentation, see: https://github.com/pcdshub/engineering_tools
 
-# # So that the epics makes all work
-# export PSPKG_ROOT=/reg/g/pcds/pkg_mgr
+
+# ***************
+# ** Now what? **
+# ***************
+#
+# * Do you want to add your own scripts directory? You could use:
+#
+#   mkdir $HOME/bin
+#   pathmunge $HOME/bin
+# 
+# * Do you want to automatically use the latest conda environment?
+#
+#   [ -d /cds/group/pcds ] && source /cds/group/pcds/pyps/conda/pcds_conda
+#
+# * Do you want to set up a development area for Python code?
+#
+#   See the "Testing packages" sections for recommended workflows.
+#   https://confluence.slac.stanford.edu/display/PCDS/PCDS+Conda+Python+Environments
