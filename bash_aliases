@@ -13,6 +13,18 @@ alias ll='ls -al'
 # "lh" is short for detailed file lists with human-readable units:
 alias lh='ls -Alh'
 
+# Going up? :)
+alias ..='cd ..'
+alias ..1='cd ..'
+alias ..2='cd ../..'
+alias ..3='cd ../../..'
+alias ..4='cd ../../../..'
+alias ..5='cd ../../../../..'
+alias ..6='cd ../../../../../..'
+alias ..7='cd ../../../../../../..'
+alias ..8='cd ../../../../../../../..'
+alias ..9='cd ../../../../../../../../..'
+
 # ***********
 # **  SSH  **
 # ***********
