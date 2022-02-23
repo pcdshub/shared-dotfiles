@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# ****************
+# ** Navigation **
+# ****************
+
+# "l" is short for "ls"
+alias l='ls'
+
+# "ll" is short for detailed file lists, with "ls -l":
+alias ll='ls -al'
+
+# "lh" is short for detailed file lists with human-readable units:
+alias lh='ls -Alh'
+
 # ***********
 # **  SSH  **
 # ***********
@@ -26,11 +39,21 @@ sshcd() {
 alias psb='sshcd psbuild-rhel7'
 
 # ** IOCs **
+
 # Watch a log file
 ioclog() {
-  tail -n 50 -f /reg/d/iocData/$1/iocInfo/ioc.log
+  IOC_NAME=$1
+  tail -n 50 -f /reg/d/iocData/$IOC_NAME/iocInfo/ioc.log
 }
 
+find_ioc() {
+  IOC_NAME=$1
+  grep -i -e $IOC_NAME /cds/data/iocData/.all_iocs/iocs.txt
+}
+
+list_all_iocs() {
+    less /cds/data/iocData/.all_iocs/iocs.txt
+}
 
 # *****************************
 # ** Python and hutch-python **
@@ -47,7 +70,8 @@ alias cxi3="hpy3 cxi"
 alias mec3="hpy3 mec"
 
 # Python 3 hutch python shortcuts
-# Quickly start a hutch-python session for a given hutch with ``hpy3 (hutchname)``
+# hpy3
+#   Quickly start a hutch-python session for a given hutch with ``hpy3 (hutchname)``
 hpy3() {
   hutch="${1}"
   shift
@@ -55,3 +79,35 @@ hpy3() {
   "/reg/g/pcds/pyps/apps/hutch-python/${hutch}/${hutch}python" ${args}
 }
 
+
+# ipython_debug_entrypoint
+#   Start an ipython debug session with your script, and get to the PDB prompt
+#   only if it encounters an error.  This could be used, for example, with
+#   typhos by way of "ipython_debug_entrypoint typhos ..typhos args.."
+ipython_debug_entrypoint() {
+    cmd=$(which $1)
+    shift
+    if [ ! -z "$cmd" ]; then
+        set -x
+        ipython -i --pdb $cmd -- $@
+        set +x
+    fi
+}
+
+# ****************
+# ** General    **
+# ****************
+
+# This allows for aliases to be passed through to sudo
+alias sudo='sudo '
+
+
+# ****************
+# ** What now?  **
+# ****************
+#
+# Add some more aliases or modify the ones above to fit your needs.
+# Also, use shellcheck to see that you're writing scripts with good syntax.
+# shellcheck is available in our pcds Python environment.
+#
+# For bash help, see https://tldp.org/LDP/Bash-Beginners-Guide/html/

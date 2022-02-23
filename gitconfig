@@ -1,0 +1,43 @@
+; vi: sw=4 ts=4 sts=4 expandtab
+
+[user]
+    name =
+    email =
+
+[url "http://git.code.sf.net/"]
+    insteadOf = git://git.code.sf.net/
+
+[url "https://github.com"]
+    insteadOf = git://github.com
+
+[apply]
+    whitespace = nowarn
+
+[column]
+    status = auto
+
+[color]
+    ui = auto
+    diff = never
+
+[core]
+    editor = vim
+    
+[push]
+    default = simple
+    
+[diff]
+    tool = vimdiff
+
+[pager]
+    diff = less
+    show = less
+    log = less
+
+[alias]
+    ls = log --oneline --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ar)%Creset'
+    lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+    st = status -s
+
+[pull]
+	ff = only
