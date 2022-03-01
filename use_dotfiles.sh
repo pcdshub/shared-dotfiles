@@ -20,12 +20,13 @@ install_file() {
     fi
 }
 
-install_file dotfiles/bashrc .bashrc
 install_file dotfiles/bash_aliases .bash_aliases
 install_file dotfiles/bash_profile .bash_profile
-install_file dotfiles/vimrc .vimrc
+install_file dotfiles/bashrc .bashrc
 install_file dotfiles/condarc .condarc
 install_file dotfiles/gitconfig .gitconfig
+install_file dotfiles/tmux.conf .tmux.conf
+install_file dotfiles/vimrc .vimrc
 
 mkdir -p .ssh
 install_file dotfiles/ssh/config .ssh/config
