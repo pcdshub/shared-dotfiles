@@ -52,17 +52,30 @@ alias psb='sshcd psbuild-rhel7'
 
 # ** IOCs **
 
-# Watch a log file
+# Watch a log file from a given IOC.
+#  Usage: ioclog (iocname)
+#  Example: ioclog ioc-xpp-gige-las01
+#  Example: ioclog ioc-xpp-*-las01
 ioclog() {
-  ioc_name=$1
-  tail -n 50 -f "/reg/d/iocData/$ioc_name/iocInfo/ioc.log"
+  # shellcheck disable=SC2086 # allow for globbing of IOC names
+  tail -n 50 -f /cds/data/iocData/$1/iocInfo/ioc.log
 }
 
+# Find a currently-deployed IOC with a bit more details:
+#  Usage: find_ioc (iocname)
+#  Example: find_ioc ioc-xpp-gige-las01
+#  Example: find_ioc ioc-xpp-.*-las01
+#  Full version is available in a table here:
+#       https://confluence.slac.stanford.edu/display/PCDS/EPICS+IOCs+Deployed+in+IOC+Manager
+#  Note: this is derived from "whatrecord iocmanager-loader" and is run on a
+#        personal cron job.
 find_ioc() {
   ioc_name=$1
   grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
 }
 
+# List all currently-deployed IOC with a bit more details.
+#  Usage: list_all_iocs
 list_all_iocs() {
     less /cds/data/iocData/.all_iocs/iocs.txt
 }
