@@ -52,6 +52,19 @@ source /cds/group/pcds/setup/epicsenv-cur.sh
 #
 # Documentation of these shortcuts can be found here:
 #    https://confluence.slac.stanford.edu/pages/viewpage.action?pageId=295099127
+#
+# Separately, pcds_shortcuts.sh also ensures that ensures that files you create
+# in shared locations will be editable by others in your group if they are
+# editable for you.  This can be important when working on shared EPICS IOCs,
+# modules, etc.
+#
+# This is done by way of:
+#   $ umask 0002
+# If you type `umask -S` you will see that this corresponds to:
+#   $ umask -S
+#   u=rwx,g=rwx,o=rx
+# Or read-write-execute for you and your group, and just read-execute for all
+# others.
 
 # ***********************
 # ** PATH modification **
