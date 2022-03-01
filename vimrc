@@ -90,3 +90,29 @@ syntax on
 " If you don't know what it is, Ex mode is likely just going to confuse you.
 " I would recommend keeping this setting mapping Q to something else.
 map Q gq
+
+" Python settings.  With filetype detection on, these settings will be used
+" for all .py files.
+au FileType python
+    \ set tabstop=4
+    \     softtabstop=4
+    \     shiftwidth=4
+    \     textwidth=79
+    \     expandtab
+    \     autoindent
+    \     fileformat=unix
+    \     encoding=utf-8
+
+" General settings for shell/vim scripts, c++, etc.
+au FileType sh,vim,cpp,yaml
+    \ set tabstop=2
+    \     softtabstop=2
+    \     shiftwidth=2
+    \     expandtab
+    \     autoindent
+
+" Show bad whitespace in an obvious but not obnoxious color
+highlight pythonSpaceError ctermbg=darkgreen guibg=darkgreen
+highlight BadWhitespace ctermbg=darkgreen guibg=darkgreen
+
+au BufNewFile,BufRead *.py,*.pyw,*.c,*.h,*.cc,*.hh,*.sh match BadWhitespace /\s\+$/
