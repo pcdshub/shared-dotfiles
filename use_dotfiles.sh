@@ -29,4 +29,4 @@ install_file dotfiles/tmux.conf .tmux.conf
 install_file dotfiles/vimrc .vimrc
 
 mkdir -p .ssh
-install_file dotfiles/ssh/pcds_config .ssh/config
+install_file dotfiles/ssh/on_site_config .ssh/config
