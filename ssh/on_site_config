@@ -1,21 +1,23 @@
 # vi: ft=sshconfig shiftwidth=4 tabstop=4 expandtab
 #
-# This is a sample ssh configuration for accessing PCDS/ECS hosts from other
-# PCDS hosts.
+# This is a sample ssh configuration for accessing PCDS/ECS hosts from within
+# the PCDS network.
 #
 # This could be called an "on-site" configuration.
 
-Host github
+Host github.com
     HostName github.com
-    ForwardX11 no
-    PreferredAuthentications=publickey
+    ProxyJump psproxy.pcdsn
     User git
-    ProxyCommand ssh psproxy.pcdsn nc %h %p
+    ForwardAgent no
+    ForwardX11 no
+    ForwardX11Trusted no
+    PreferredAuthentications=publickey
+    RequestTTY no
 
-Host !github
+Host !github.com
     ForwardAgent yes
-    Compression yes
     ForwardX11 yes
     ForwardX11Trusted yes
     XAuthLocation /opt/X11/bin/xauth
-    PreferredAuthentications=publickey
+    PreferredAuthentications=publickey,password
