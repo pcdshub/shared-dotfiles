@@ -30,10 +30,6 @@ Host pslogin-arch
     LocalForward 17665 pscaa02:17665
     # Archiver API for programmatic access:
     LocalForward 17668 pscaa02:17668
-    # Power monitoring: http://localhost:8089/ion
-    LocalForward 8089 powermon:80
-    # recipe metering: http://localhost:8090/RecipeAnalytics/Operations/Status3
-    LocalForward 8090 recipesrv:80
 
 Host psbuild-rhel7
     HostName psbuild-rhel7-01
@@ -47,9 +43,25 @@ Host psdev
 # plcprog-console access
 Host psbuild-plc 
     HostName psbuild-rhel7
-    # This following ProxyCommand line may not be required depending on your ssh version:
     ProxyJump pslogin
+    ForwardAgent no
     LocalForward 3389 plcprog-console:3389
+    # The following indicates that we use this SSH connection just for remote
+    # desktop, nothing else.
+    RemoteCommand echo "** Ready for remote desktop connections **"; read -n 10
+ 
+Host psbuild-socks
+    HostName psbuild-rhel7
+    ProxyJump pslogin
+    ForwardAgent no
+    DynamicForward 8080
+    RemoteCommand echo "** SOCKS proxy ready **"; read -n 10
+    # On MacOS, to start Google Chrome with this proxy:
+    #  open -a "Google Chrome" --args --proxy-server=socks5://localhost:8080
+    # You will need to enter URLs with "http://" preceding them, otherwise
+    # it may send you to Google. These examples should work:
+    #    http://ctl-logsrv01.pcdsn/
+    #    http://pscaa01.pcdsn:17665/mgmt/ui/index.html
  
 # pscron - used for scheduling cron job tasks
 Host pscron
