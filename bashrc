@@ -66,6 +66,14 @@ source /cds/group/pcds/setup/epicsenv-cur.sh
 # Or read-write-execute for you and your group, and just read-execute for all
 # others.
 
+# Enable tab completion for common commands:
+[ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
+# This includes things like ssh, git, and so on.
+# The commands which have tab completion can be found here:
+#    /usr/share/bash-completion/completions/
+# You may also add your own completions in ~/.bash_completion, which will be
+# automatically sourced by the above script.
+
 # ***********************
 # ** PATH modification **
 # ***********************
