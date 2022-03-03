@@ -1,6 +1,11 @@
-# This is a sample ssh configuration for accessing PCDS/ECS hosts.
-#
 # vi: ft=sshconfig shiftwidth=4 tabstop=4 expandtab
+#
+# This is a sample ssh configuration for accessing PCDS/ECS hosts.
+# 
+# This could be called a remote or "home" configuration.
+#
+# You should use it on your own laptop and *not* place this in your PCDS
+# home directory configuration.
 
 Host github
     HostName github.com
