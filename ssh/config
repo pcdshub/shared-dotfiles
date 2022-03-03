@@ -12,14 +12,6 @@ Host github
     ForwardX11 no
     PreferredAuthentications=publickey
 
-Host !github
-    ForwardAgent yes
-    Compression yes
-    ForwardX11 yes
-    ForwardX11Trusted yes
-    XAuthLocation /opt/X11/bin/xauth
-    PreferredAuthentications=publickey
-
 Host pslogin
     HostName pslogin.slac.stanford.edu
     # ControlMaster can allow you to multiplex pslogin connections!
@@ -870,3 +862,11 @@ Host xpp-daq-ics
 
 Host xpp-daq-ipmi
     ProxyCommand ssh -XT psbuild-rhel7 nc %h %p
+
+Host !github
+    ForwardAgent yes
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    XAuthLocation /opt/X11/bin/xauth
+    PreferredAuthentications=publickey
