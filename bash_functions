@@ -29,8 +29,8 @@ sshcd() {
 #  Example: ioclog ioc-xpp-gige-las01
 #  Example: ioclog ioc-xpp-*-las01
 ioclog() {
-  # shellcheck disable=SC2086 # allow for globbing of IOC names
-  tail -n 50 -f /cds/data/iocData/$1/iocInfo/ioc.log
+    # shellcheck disable=SC2086 # allow for globbing of IOC names
+    tail -n 50 -f /cds/data/iocData/$1/iocInfo/ioc.log
 }
 
 # Find a currently-deployed IOC with a bit more details:
@@ -42,8 +42,8 @@ ioclog() {
 #  Note: this is derived from "whatrecord iocmanager-loader" and is run on a
 #        personal cron job.
 find_ioc() {
-  ioc_name=$1
-  grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
+    ioc_name=$1
+    grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
 }
 
 # List all currently-deployed IOC with a bit more details.

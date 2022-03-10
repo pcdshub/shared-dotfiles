@@ -53,9 +53,9 @@ alias mec3="hpy3 mec"
 # hpy3
 #   Quickly start a hutch-python session for a given hutch with ``hpy3 (hutchname)``
 hpy3() {
-  hutch="${1}"
-  shift
-  "/reg/g/pcds/pyps/apps/hutch-python/${hutch}/${hutch}python" "$@"
+    hutch="${1}"
+    shift
+    "/reg/g/pcds/pyps/apps/hutch-python/${hutch}/${hutch}python" "$@"
 }
 
 
