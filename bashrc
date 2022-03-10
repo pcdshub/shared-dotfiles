@@ -69,6 +69,10 @@ source /cds/group/pcds/setup/epicsenv-cur.sh
 # Or read-write-execute for you and your group, and just read-execute for all
 # others.
 
+# ********************
+# ** Tab completion **
+# ********************
+
 # Enable tab completion for common commands:
 [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 # This includes things like ssh, git, and so on.
@@ -76,6 +80,56 @@ source /cds/group/pcds/setup/epicsenv-cur.sh
 #    /usr/share/bash-completion/completions/
 # You may also add your own completions in ~/.bash_completion, which will be
 # automatically sourced by the above script.
+
+# The following customize tab completion in certain ways.  If you don't like the functionality
+# they add, comment or remove them:
+
+# Ignore lower/uppercase letters when using tab completion (TMUX[tab] and tmux[tab] are equivalent).
+bind "set completion-ignore-case on"
+
+# Treat dashes/hyphens and underscores as equivalent (use_dotfiles[tab] is the same as use-dotfiles[tab]).
+bind "set completion-map-case on"
+
+# Display matches for ambiguous patterns at first tab press.
+bind "set show-all-if-ambiguous on"
+
+# Immediately add a trailing slash when autocompleting symlinks to directories.
+bind "set mark-symlinked-directories on"
+
+
+# **********************
+# ** History settings **
+# **********************
+
+# Did you know that commands you type are tracked in ~/.bash_history ?
+# This section configures how history is stored and displayed.
+
+# Append to the history file, don't overwrite it.
+shopt -s histappend
+
+# Save multi-line commands as one command.
+shopt -s cmdhist
+
+# Record each line as it gets issued.
+# We don't need "export PROMPT_COMMAND" here as only bash cares about this.
+PROMPT_COMMAND='history -a'
+
+# Keep a long list of history lines, because it's convenient and we have the
+# space.  Default is normally 500.
+HISTSIZE=500000
+HISTFILESIZE=100000
+
+# Do not add duplicate entries to the history.
+HISTCONTROL="erasedups:ignoreboth"
+
+# Don't record some commands in our history. Add more by including :cmdname:
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+
+# Show useful timestamps in our history.  See `man strftime` for what the parts
+# mean.
+# For example:
+#    800   2022-03-10 11:37:50 $ command that_I_ran
+HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S $ '
 
 # ***********************
 # ** Per-host settings **
@@ -127,6 +181,46 @@ pathmunge /reg/g/pcds/engineering_tools/latest-released/scripts
 # /reg/g/pcds/engineering_tools/latest-released/scripts
 #  * General tools of use to ECS engineers
 #    For documentation, see: https://github.com/pcdshub/engineering_tools
+
+
+# *************************
+# ** Navigation settings **
+# *************************
+
+# If you type just a directory name, assume that you want to cd into that
+# directory.  Otherwise, you would just see the message
+#     "-bash: ./the_directory: Is a directory"
+shopt -s autocd 2> /dev/null
+
+# This allows you to bookmark your favorite places across the file system.
+# Define a variable containing a path and you will be able to cd into it
+# regardless of the directory you're in
+shopt -s cdable_vars
+
+# Examples:
+# If you keep your git repositories in $HOME/Repos, you could do the following:
+#    export repos="$HOME/Repos"
+# Then:
+#    $ $repos/pcdsdevices
+#    $ $repos/lightpath
+#
+# Also consider adding:
+#   export dotfiles="$HOME/dotfiles"
+
+
+# ****************************
+# ** Miscellaneous settings **
+# ****************************
+
+# Update window size after every command.
+shopt -s checkwinsize
+
+# Automatically trim long paths in the prompt.
+PROMPT_DIRTRIM=2
+
+# Enable history expansion with space.
+# E.g. typing !!<space> will replace the !! with your last command
+bind Space:magic-space
 
 
 # ***************
