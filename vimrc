@@ -29,7 +29,7 @@ set ignorecase smartcase               " case-insensitive (ic) search by default
 set imdisable                          " Disable the IME (gvim and unicode don't play well on different locale)
 set incsearch                          " do incremental searching
 set mouse+=a                           " enable mouse mode (terminal dependent)
-set nobackup                           " disable writing .bak 
+set nobackup                           " disable writing .bak
 set novb                               " ** visual bell, no beeping! **
 set number                             " line numbering
 set numberwidth=5                      " the width of the number column in characters

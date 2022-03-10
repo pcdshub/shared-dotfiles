@@ -1,7 +1,7 @@
 # vi: ft=sshconfig shiftwidth=4 tabstop=4 expandtab
 #
 # This is a sample ssh configuration for accessing PCDS/ECS hosts.
-# 
+#
 # This could be called a remote or "home" configuration.
 #
 # You should use it on your own laptop and *not* place this in your PCDS
@@ -41,7 +41,7 @@ Host psdev
     ProxyJump pslogin
 
 # plcprog-console access
-Host psbuild-plc 
+Host psbuild-plc
     HostName psbuild-rhel7
     ProxyJump pslogin
     ForwardAgent no
@@ -49,7 +49,7 @@ Host psbuild-plc
     # The following indicates that we use this SSH connection just for remote
     # desktop, nothing else.
     RemoteCommand echo "** Ready for remote desktop connections **"; read -n 10
- 
+
 Host psbuild-socks
     HostName psbuild-rhel7
     ProxyJump pslogin
@@ -62,15 +62,15 @@ Host psbuild-socks
     # it may send you to Google. These examples should work:
     #    http://ctl-logsrv01.pcdsn/
     #    http://pscaa01.pcdsn:17665/mgmt/ui/index.html
- 
+
 # pscron - used for scheduling cron job tasks
 Host pscron
     ProxyJump pslogin
 
 # Additional hosts from netconfig, hopping through psbuild-rhel7:
 # To rebuild or customize this list, use the following:
-# for host in $(netconfig search '*' --brief|sort|grep -e "^ioc-" -e "^ctl-" -e "-console" -e "-daq" | grep -v -e "psbuild" -e "pslogin"); do 
-#     echo "Host $host"; echo "    ProxyJump psbuild-rhel7"; 
+# for host in $(netconfig search '*' --brief|sort|grep -e "^ioc-" -e "^ctl-" -e "-console" -e "-daq" | grep -v -e "psbuild" -e "pslogin"); do
+#     echo "Host $host"; echo "    ProxyJump psbuild-rhel7";
 # done
 # --------------------------------------------------------------
 # ----------------- Miscellaneous host section -----------------

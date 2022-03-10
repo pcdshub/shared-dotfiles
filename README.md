@@ -20,7 +20,7 @@ You can then version-control your dotfiles, simply soft-linking the files
 in your fork.  For example:
 
 1. Fork pcdshub/shared-dotfiles to your-user/shared-dotfiles
-2. 
+2.
 ```bash
 $ ssh psbuild-rhel7
 $ cd   # <-- work in your home directory

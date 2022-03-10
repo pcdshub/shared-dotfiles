@@ -24,10 +24,10 @@
 
 [core]
     editor = vim
-    
+
 [push]
     default = simple
-    
+
 [diff]
     tool = vimdiff
 

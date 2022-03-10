@@ -137,7 +137,7 @@ pathmunge /reg/g/pcds/engineering_tools/latest-released/scripts
 #
 #   mkdir $HOME/bin
 #   pathmunge $HOME/bin
-# 
+#
 # * Do you want to automatically use the latest conda environment?
 #
 #   [ -d /cds/group/pcds ] && source /cds/group/pcds/pyps/conda/pcds_conda
