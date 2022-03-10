@@ -75,6 +75,34 @@ source /cds/group/pcds/setup/epicsenv-cur.sh
 # automatically sourced by the above script.
 
 # ***********************
+# ** Per-host settings **
+# ***********************
+
+
+# Configure web proxy settings on a per-host basis.
+# Tools like ``wget`` or ``curl`` will use the environment variable settings to
+# proxy requests through the host "psproxy.pcdsn".
+case $(hostname -s) in
+    # Hosts with direct Internet access
+	psbuild-* | pslogin* | cent7* )
+        unset http_proxy;
+        unset https_proxy;
+		;;
+
+    # Hosts with no access to psproxy.pcdsn
+	 mcclogin | lcls-* )
+        unset http_proxy;
+        unset https_proxy;
+		;;
+
+    # Other hosts likely do not have direct Internet access
+    * )
+        export http_proxy=http://psproxy.pcdsn:3128;
+        export https_proxy=http://psproxy.pcdsn:3128;
+        ;;
+esac
+
+# ***********************
 # ** PATH modification **
 # ***********************
 
