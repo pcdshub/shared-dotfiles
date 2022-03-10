@@ -21,6 +21,7 @@ install_file() {
 }
 
 install_file dotfiles/bash_aliases .bash_aliases
+install_file dotfiles/bash_functions .bash_functions
 install_file dotfiles/bash_profile .bash_profile
 install_file dotfiles/bashrc .bashrc
 install_file dotfiles/condarc .condarc

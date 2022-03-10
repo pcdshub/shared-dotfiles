@@ -16,9 +16,12 @@ export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\
 #  * Having trouble exiting it? Type ":wq!" to save and quit.
 export EDITOR=vim
 
-# If you have aliases defined, let's use them:
+# If you have aliases and functions defined, let's use them:
 [ -f "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
-# If you have additional aliases to add, put them in that file!
+# If you have additional aliases to add, put them in this file!
+
+[ -f "$HOME/.bash_functions" ] && source "$HOME/.bash_functions"
+# If you have additional functions to add, put them in this file!
 
 # *****************************
 # ** Python and hutch-python **

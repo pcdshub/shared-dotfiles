@@ -29,56 +29,11 @@ alias ..9='cd ../../../../../../../../..'
 # **  SSH  **
 # ***********
 
-# sshcd - ssh to a host, retaining your current directory
-#   Usage:   sshcd hostname [optional command to run]
-#   Example: sshcd lfe-console ls -l
-sshcd() { 
-    host=$1;
-    shift;
-    command="$*";
-    ssh -t "$host" "
-        cd '${PWD}'
-        echo 'Current working directory: $PWD'
-        ${command}
-        bash
-    ";
-}
-
 # psb:
 #   psbuild-rhel7 is one of the most common hosts you will use.
 #   This shortcut ``psb`` will allow you to quickly go to that host while
 #   retaining your current working directory.
 alias psb='sshcd psbuild-rhel7'
-
-# ** IOCs **
-
-# Watch a log file from a given IOC.
-#  Usage: ioclog (iocname)
-#  Example: ioclog ioc-xpp-gige-las01
-#  Example: ioclog ioc-xpp-*-las01
-ioclog() {
-  # shellcheck disable=SC2086 # allow for globbing of IOC names
-  tail -n 50 -f /cds/data/iocData/$1/iocInfo/ioc.log
-}
-
-# Find a currently-deployed IOC with a bit more details:
-#  Usage: find_ioc (iocname)
-#  Example: find_ioc ioc-xpp-gige-las01
-#  Example: find_ioc ioc-xpp-.*-las01
-#  Full version is available in a table here:
-#       https://confluence.slac.stanford.edu/display/PCDS/EPICS+IOCs+Deployed+in+IOC+Manager
-#  Note: this is derived from "whatrecord iocmanager-loader" and is run on a
-#        personal cron job.
-find_ioc() {
-  ioc_name=$1
-  grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
-}
-
-# List all currently-deployed IOC with a bit more details.
-#  Usage: list_all_iocs
-list_all_iocs() {
-    less /cds/data/iocData/.all_iocs/iocs.txt
-}
 
 # *****************************
 # ** Python and hutch-python **
@@ -103,20 +58,6 @@ hpy3() {
   "/reg/g/pcds/pyps/apps/hutch-python/${hutch}/${hutch}python" "$@"
 }
 
-
-# ipython_debug_entrypoint
-#   Start an ipython debug session with your script, and get to the PDB prompt
-#   only if it encounters an error.  This could be used, for example, with
-#   typhos by way of "ipython_debug_entrypoint typhos ..typhos args.."
-ipython_debug_entrypoint() {
-    cmd=$(which "$1")
-    shift
-    if [ -n "$cmd" ]; then
-        set -x
-        ipython -i --pdb "$cmd" -- "$@"
-        set +x
-    fi
-}
 
 # ****************
 # ** General    **
