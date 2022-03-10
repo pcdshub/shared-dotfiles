@@ -92,14 +92,14 @@ hutchp_logs() {
     else
         echo $log_path;
         cd $log_path;
-        ls "${current_year}*"
+        ls -d "${current_year}"*
     fi
 }
 
-# hutchp_config - go to the per-hutch configuration directory.
-#   Usage: hutchp_config (hutch_name)
-#   Example: hutchp_config rix
-hutchp_config() {
+# hutch_config - go to the per-hutch configuration directory.
+#   Usage: hutch_config (hutch_name)
+#   Example: hutch_config rix
+hutch_config() {
     cd "/cds/group/pcds/config/$1/"
 }
 
