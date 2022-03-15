@@ -7,6 +7,12 @@
 # ** Prompt and basic settings **
 # *******************************
 
+# Here is where your dotfiles should be located.  Let's set this so
+# we can reuse this later.
+if [ -z "$dotfiles" ]; then
+    export dotfiles="$HOME/dotfiles"
+fi
+
 # The following sets up your prompt to show at least the host
 export PS1='\[\e[0;31m\][\u@\h  \W]\$\[\e[m\] '
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
@@ -33,6 +39,11 @@ export HAPPI_CFG=/cds/group/pcds/pyps/apps/hutch-python/device_config/happi.cfg
 # **************************************************
 # ** External scripts with common useful settings **
 # **************************************************
+
+# Add in the shared-dotfiles provided helpers:
+#  This includes some longer functions which you might not want to see
+#  each time you poke around with your own dotfiles.
+source "$dotfiles/helpers.sh"
 
 # This includes tokens for accessing typhos / confluence resources:
 source /cds/group/pcds/pyps/conda/.tokens/typhos.sh
@@ -204,9 +215,6 @@ shopt -s cdable_vars
 #    $ $repos/pcdsdevices
 #    $ $repos/lightpath
 #
-# Also consider adding:
-#   export dotfiles="$HOME/dotfiles"
-
 
 # ****************************
 # ** Miscellaneous settings **
