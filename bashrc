@@ -108,6 +108,28 @@ bind "set show-all-if-ambiguous on"
 bind "set mark-symlinked-directories on"
 
 
+# *******************
+# ** Fuzzy finding **
+# *******************
+
+# With this configuration, you can fuzzy find your way through your bash
+# history or files in the current directory.
+#
+# Key bindings:
+#   Ctrl-R: search through your bash history by typing a query
+#   Ctrl-T: search through files in the current directory
+#
+# We leave this enabled by default, but if you prefer the original bash
+# behavior, feel free to comment out - or remove - this section.
+
+_FZF_SHARE_PATH="$_PCDS_CONDA_FOR_UTILS/share/fzf"
+_FZF_COMPLETIONS="$_FZF_SHARE_PATH/shell/completions.bash"
+_FZF_BINDINGS="$_FZF_SHARE_PATH/shell/key-bindings.bash"
+
+[ -f "$_FZF_COMPLETIONS" ] && source "$_FZF_COMPLETIONS";
+[ -f "$_FZF_BINDINGS" ] && source "$_FZF_BINDINGS";
+
+
 # **********************
 # ** History settings **
 # **********************
