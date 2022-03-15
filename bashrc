@@ -7,6 +7,12 @@
 # ** Prompt and basic settings **
 # *******************************
 
+# Here is where your dotfiles should be located.  Let's set this so
+# we can reuse this later.
+if [ -z "$dotfiles" ]; then
+    export dotfiles="$HOME/dotfiles"
+fi
+
 # The following sets up your prompt to show at least the host
 export PS1='\[\e[0;31m\][\u@\h  \W]\$\[\e[m\] '
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
@@ -33,6 +39,11 @@ export HAPPI_CFG=/cds/group/pcds/pyps/apps/hutch-python/device_config/happi.cfg
 # **************************************************
 # ** External scripts with common useful settings **
 # **************************************************
+
+# Add in the shared-dotfiles provided helpers:
+#  This includes some longer functions which you might not want to see
+#  each time you poke around with your own dotfiles.
+source "$dotfiles/helpers.sh"
 
 # This includes tokens for accessing typhos / confluence resources:
 source /cds/group/pcds/pyps/conda/.tokens/typhos.sh
@@ -95,6 +106,28 @@ bind "set show-all-if-ambiguous on"
 
 # Immediately add a trailing slash when autocompleting symlinks to directories.
 bind "set mark-symlinked-directories on"
+
+
+# *******************
+# ** Fuzzy finding **
+# *******************
+
+# With this configuration, you can fuzzy find your way through your bash
+# history or files in the current directory.
+#
+# Key bindings:
+#   Ctrl-R: search through your bash history by typing a query
+#   Ctrl-T: search through files in the current directory
+#
+# We leave this enabled by default, but if you prefer the original bash
+# behavior, feel free to comment out - or remove - this section.
+
+_FZF_SHARE_PATH="$_PCDS_CONDA_FOR_UTILS/share/fzf"
+_FZF_COMPLETIONS="$_FZF_SHARE_PATH/shell/completions.bash"
+_FZF_BINDINGS="$_FZF_SHARE_PATH/shell/key-bindings.bash"
+
+[ -f "$_FZF_COMPLETIONS" ] && source "$_FZF_COMPLETIONS";
+[ -f "$_FZF_BINDINGS" ] && source "$_FZF_BINDINGS";
 
 
 # **********************
@@ -204,9 +237,6 @@ shopt -s cdable_vars
 #    $ $repos/pcdsdevices
 #    $ $repos/lightpath
 #
-# Also consider adding:
-#   export dotfiles="$HOME/dotfiles"
-
 
 # ****************************
 # ** Miscellaneous settings **

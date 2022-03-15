@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Note:
+# If you see some functions using "_helper_" functions, they are defined
+# in $HOME/dotfiles/helpers.sh
+#
+# They are reusable tools that you might not want to wade through every
+# time you open your bash_functions script.
+
 # ***********
 # **  SSH  **
 # ***********
@@ -41,9 +48,57 @@ ioclog() {
 #       https://confluence.slac.stanford.edu/display/PCDS/EPICS+IOCs+Deployed+in+IOC+Manager
 #  Note: this is derived from "whatrecord iocmanager-loader" and is run on a
 #        personal cron job.
-find_ioc() {
-    ioc_name=$1
-    grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
+grep_ioc() {
+    local ioc_name=$1
+    local fzf
+    fzf=$(_helper_find_fzf)
+    if [ -z "$fzf" ]; then
+        grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
+    else
+        $fzf +m -q "$ioc_name" < /cds/data/iocData/.all_iocs/iocs.txt
+    fi
+}
+
+# Go to an IOC data directory (with fuzzy searching).
+#  Usage: iocdata [query]
+#  Example: iocdata
+#  Example: iocdata ioc-xcs
+iocdata() {
+    _helper_cd_under /cds/data/iocData "$@"
+}
+
+# Go to an IOC startup script directory (with fuzzy searching).
+#  Usage: cdioc [iocname]
+#  Example: cdioc
+#  Example: cdioc ioc-xcs
+#  For each example, user input is required to pick the IOC.
+cdioc() {
+    local ioc_name
+    local ioc_path
+    local ioc_startup
+    local jq
+    ioc_name=$( grep_ioc "$@" | cut -d "|" -f 2 | sed -e "s/\s*//g" )
+    echo "IOC name: $ioc_name"
+    ioc_info_json=$(_helper_get_ioc_info_json "$ioc_name")
+    echo "$ioc_info_json"
+
+    jq=$(_helper_find_jq)
+
+    if [ -z "$jq" ]; then
+        return;
+    fi
+
+    ioc_startup=$(echo $ioc_info_json | $jq -r ".script" )
+    ioc_path=$(dirname "$ioc_startup")
+
+    if [ -d "$ioc_path" ]; then
+        history -s "cd \"$ioc_path\""
+        cd "$ioc_path"
+        echo "Working directory: $PWD"
+        echo "Tip: use 'cd -' to go back."
+    else
+        echo "$ioc_path does not exist"
+    fi
 }
 
 # List all currently-deployed IOC with a bit more details.
@@ -87,12 +142,11 @@ hutchp_logs() {
     current_month=$(date -u +"%Y_%m")
     date_path="${log_path}/${current_month}"
     if [ -d "$date_path" ]; then
-        echo "$date_path";
-        cd $date_path;
+        echo "$date_path"
+        cd "$date_path"
     else
-        echo $log_path;
-        cd $log_path;
-        ls -d "${current_year}"*
+        echo "$log_path"
+        cd "$log_path" && ls -d "${current_year}"*
     fi
 }
 

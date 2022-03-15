@@ -1,10 +1,22 @@
 # shared-dotfiles
 
-Shared configuration useful for PCDS engineers: "dot" files such as .ssh/config.
+Shared configuration useful for PCDS engineers: "dot" files such as bash
+configuration (.bashrc) and SSH configuration (.ssh/config).
 
 ## How to use these
 
+### Trial run
+
+```bash
+$ ssh psbuild-rhel7
+$ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
+$ cd dotfiles
+$ bash --rcfile try_me.sh
+```
+
 ### Out-of-the-box
+
+To link the scripts here and use them every time when you login:
 
 ```bash
 $ ssh psbuild-rhel7

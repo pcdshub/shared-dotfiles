@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd $HOME
+cd "$HOME" || exit
 
-if [ ! -d dotfiles ]; then
+if [ ! -d "dotfiles" ]; then
     echo "Did you forget to clone dotfiles into $HOME/dotfiles?" > /dev/stderr
     exit 1;
 fi
