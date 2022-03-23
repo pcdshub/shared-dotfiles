@@ -1,0 +1,196 @@
+#!/bin/bash
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# *******************************
+# ** Prompt and basic settings **
+# *******************************
+
+# Here is where your dotfiles should be located.  Let's set this so
+# we can reuse this later.
+if [ -z "$dotfiles" ]; then
+    export dotfiles="$HOME/dotfiles"
+fi
+
+# The following sets up your prompt to show at least the host
+export PS1='\[\e[0;31m\][\u@\h  \W]\$\[\e[m\] '
+export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
+
+# Your default editor will be set to vim.
+#  * Having trouble using it? Try running `vimtutor`.
+#  * Having trouble exiting it? Type ":wq!" to save and quit.
+export EDITOR=vim
+
+# If you have aliases and functions defined, let's use them:
+[ -f "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
+# If you have additional aliases to add, put them in this file!
+
+[ -f "$HOME/.bash_functions" ] && source "$HOME/.bash_functions"
+# If you have additional functions to add, put them in this file!
+
+# *****************************
+# ** Python and hutch-python **
+# *****************************
+
+# **************************************************
+# ** External scripts with common useful settings **
+# **************************************************
+
+# Add in the shared-dotfiles provided helpers:
+#  This includes some longer functions which you might not want to see
+#  each time you poke around with your own dotfiles.
+source "$dotfiles/helpers.sh"
+
+# ********************
+# ** Tab completion **
+# ********************
+
+# Enable tab completion for common commands, if available:
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    source /usr/share/bash-completion/bash_completion
+elif [ -f /usr/local/share/bash-completion/bash_completion ]; then
+    source /usr/local/share/bash-completion/bash_completion
+fi
+# This includes things like ssh, git, and so on.
+# The commands which have tab completion can be found here:
+#    /usr/share/bash-completion/completions/
+# You may also add your own completions in ~/.bash_completion, which will be
+# automatically sourced by the above script.
+
+# The following customize tab completion in certain ways.  If you don't like the functionality
+# they add, comment or remove them:
+
+# Ignore lower/uppercase letters when using tab completion (TMUX[tab] and tmux[tab] are equivalent).
+bind "set completion-ignore-case on"
+
+# Treat dashes/hyphens and underscores as equivalent (use_dotfiles[tab] is the same as use-dotfiles[tab]).
+bind "set completion-map-case on"
+
+# Display matches for ambiguous patterns at first tab press.
+bind "set show-all-if-ambiguous on"
+
+# Immediately add a trailing slash when autocompleting symlinks to directories.
+bind "set mark-symlinked-directories on"
+
+# *******************
+# ** Fuzzy finding **
+# *******************
+
+# With this configuration, you can fuzzy find your way through your bash
+# history or files in the current directory.
+#
+# Key bindings:
+#   Ctrl-R: search through your bash history by typing a query
+#   Ctrl-T: search through files in the current directory
+#
+# We leave this enabled by default, but if you prefer the original bash
+# behavior, feel free to comment out - or remove - this section.
+
+# Want to install fzf like we have on psbuild and such?
+# Use the following:
+#   $ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+#   $ ~/.fzf/install
+
+[ -f ~/.fzf.bash ] && source $HOME/.fzf.bash
+
+# **********************
+# ** History settings **
+# **********************
+
+# Did you know that commands you type are tracked in ~/.bash_history ?
+# This section configures how history is stored and displayed.
+
+# Append to the history file, don't overwrite it.
+shopt -s histappend
+
+# Save multi-line commands as one command.
+shopt -s cmdhist
+
+# Record each line as it gets issued.
+# We don't need "export PROMPT_COMMAND" here as only bash cares about this.
+PROMPT_COMMAND='history -a'
+
+# Keep a long list of history lines, because it's convenient and we have the
+# space.  Default is normally 500.
+HISTSIZE=500000
+HISTFILESIZE=100000
+
+# Do not add duplicate entries to the history.
+HISTCONTROL="erasedups:ignoreboth"
+
+# Don't record some commands in our history. Add more by including :cmdname:
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+
+# Show useful timestamps in our history.  See `man strftime` for what the parts
+# mean.
+# For example:
+#    800   2022-03-10 11:37:50 $ command that_I_ran
+HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S $ '
+
+# ***********************
+# ** Per-host settings **
+# ***********************
+
+
+# Configure settings on a per-host basis.
+# Tools like ``wget`` or ``curl`` will use the environment variable settings to
+# proxy requests through the host "psproxy.pcdsn".
+case $(hostname -s) in
+    # Hosts with direct Internet access
+	example-hostname-* )
+        # This would only be run for hosts which start with
+        # "example-hostname-".
+        echo "On example host."
+		;;
+
+    # All other hosts would go through this
+    * )
+        # Put default things here.
+        ;;
+esac
+
+# ***********************
+# ** PATH modification **
+# ***********************
+
+# ``pathmunge`` is a utility which will modify your PATH.
+# Want to add a directory of your own scripts? Try using something like:
+# pathmunge $HOME/bin
+# Consider putting your scripts in your dotfiles repository as well.
+
+# *************************
+# ** Navigation settings **
+# *************************
+
+# If you type just a directory name, assume that you want to cd into that
+# directory.  Otherwise, you would just see the message
+#     "-bash: ./the_directory: Is a directory"
+shopt -s autocd 2> /dev/null
+
+# This allows you to bookmark your favorite places across the file system.
+# Define a variable containing a path and you will be able to cd into it
+# regardless of the directory you're in
+shopt -s cdable_vars
+
+# Examples:
+# If you keep your git repositories in $HOME/Repos, you could do the following:
+#    export repos="$HOME/Repos"
+# Then:
+#    $ $repos/pcdsdevices
+#    $ $repos/lightpath
+#
+
+# ****************************
+# ** Miscellaneous settings **
+# ****************************
+
+# Update window size after every command.
+shopt -s checkwinsize
+
+# Automatically trim long paths in the prompt.
+PROMPT_DIRTRIM=2
+
+# Enable history expansion with space.
+# E.g. typing !!<space> will replace the !! with your last command
+bind Space:magic-space

@@ -66,7 +66,7 @@ fi
 link_file "dotfiles/${on_or_off}_site/bash_aliases" .bash_aliases
 link_file "dotfiles/${on_or_off}_site/bash_functions" .bash_functions
 link_file "dotfiles/${on_or_off}_site/bash_profile" .bash_profile
-link_file dotfiles/bashrc .bashrc
+link_file "dotfiles/${on_or_off}_site/bashrc" .bashrc
 link_file dotfiles/condarc .condarc
 link_file dotfiles/gitconfig .gitconfig
 link_file dotfiles/tmux.conf .tmux.conf

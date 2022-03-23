@@ -110,3 +110,21 @@ _helper_get_ioc_info_json() {
         echo "Sorry, jq is unavailable" 2>/dev/stderr
     fi
 }
+
+# pathmunge
+#   Add a path to your $PATH, if it's not there already.
+#   Usage: pathmunge (path) [after]
+#   Example: pathmunge $HOME/bin
+#   Example: pathmunge $HOME/lower-priority/bin after
+pathmunge () {
+    case ":${PATH}:" in
+        *:"$1":*)
+            ;;
+        *)
+            if [ "$2" = "after" ] ; then
+                PATH=$PATH:$1
+            else
+                PATH=$1:$PATH
+            fi
+    esac
+}
