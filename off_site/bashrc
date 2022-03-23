@@ -42,6 +42,16 @@ export EDITOR=vim
 #  each time you poke around with your own dotfiles.
 source "$dotfiles/helpers.sh"
 
+# *********
+# ** SSH **
+# *********
+
+# This is the jump host that will be used to access the PCDS network.
+# * The most common setting will be "pslogin" here.
+# * If you have access to the machine "centos7", you may consider switching
+#   to it for key-based access.
+export PS_JUMP_HOST="pslogin"
+
 # ********************
 # ** Tab completion **
 # ********************

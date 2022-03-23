@@ -1368,14 +1368,6 @@ Host xtod-console-ics
 # --------------End Miscellaneous host section -----------------
 # --------------------------------------------------------------
 
-Host *
-    ForwardAgent yes
-    Compression yes
-    ForwardX11 yes
-    ForwardX11Trusted yes
-    XAuthLocation /opt/X11/bin/xauth
-    PreferredAuthentications=publickey,password
-
 Host github.com
     HostName github.com
     ForwardAgent no
@@ -1383,3 +1375,14 @@ Host github.com
     ForwardX11Trusted no
     PreferredAuthentications=publickey
     RequestTTY no
+
+Host *.slac.stanford.edu
+    ProxyJump %r@psbuild-rhel7
+
+Host *
+    ForwardAgent yes
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    XAuthLocation /opt/X11/bin/xauth
+    PreferredAuthentications=publickey,password
