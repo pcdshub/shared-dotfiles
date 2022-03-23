@@ -5,6 +5,13 @@
 #
 # This could be called an "on-site" configuration.
 
+Host *
+    ForwardAgent yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    XAuthLocation /opt/X11/bin/xauth
+    PreferredAuthentications=publickey,password
+
 Host github.com
     HostName github.com
     ProxyJump psproxy.pcdsn
@@ -14,10 +21,3 @@ Host github.com
     ForwardX11Trusted no
     PreferredAuthentications=publickey
     RequestTTY no
-
-Host !github.com
-    ForwardAgent yes
-    ForwardX11 yes
-    ForwardX11Trusted yes
-    XAuthLocation /opt/X11/bin/xauth
-    PreferredAuthentications=publickey,password
