@@ -119,7 +119,7 @@ _helper_get_ioc_info_json() {
 # _helper_remove_from_list
 #   Remove an item from a list *and* deduplicate the list.
 #   Usage: _helper_remove_from_list (to_remove) (from) [delimiter ":"]
-_helper_remove_from_list() {
+_helper_remove_from_list () {
     local to_remove
     local value
     local delimiter
@@ -188,7 +188,7 @@ pathpurge()
 # pathmunge
 #  Add a path to the beginning of ${PATH}
 #  	  Usage: pathmunge (dirname)
-pathmunge ()
+pathmunge()
 {
     local to_add
     to_add="$1"
@@ -232,7 +232,7 @@ pythonpathpurge()
 # pythonpathmunge
 #  Add a path to the beginning of ${PYTHONPATH}
 #  	  Usage: pythonpathmunge (dirname)
-pythonpathmunge ()
+pythonpathmunge()
 {
     local to_add
     to_add="$1"
