@@ -1384,6 +1384,7 @@ Host github.com
     ForwardX11Trusted no
     PreferredAuthentications=publickey
     RequestTTY no
+    UpdateHostKeys yes
 
 Host centos7
     HostName centos7.slac.stanford.edu
