@@ -8,4 +8,4 @@ addons:
       - shellcheck
 
 script:
- - run_tests.sh
+ - bash ./run_tests.sh
