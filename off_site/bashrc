@@ -102,7 +102,7 @@ bind "set mark-symlinked-directories on"
 #   $ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 #   $ ~/.fzf/install
 
-[ -f ~/.fzf.bash ] && source $HOME/.fzf.bash
+[ -f ~/.fzf.bash ] && source "$HOME/.fzf.bash"
 
 # **********************
 # ** History settings **

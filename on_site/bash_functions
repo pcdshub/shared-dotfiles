@@ -88,12 +88,12 @@ cdioc() {
         return;
     fi
 
-    ioc_startup=$(echo $ioc_info_json | $jq -r ".script" )
+    ioc_startup=$(echo "$ioc_info_json" | $jq -r ".script" )
     ioc_path=$(dirname "$ioc_startup")
 
     if [ -d "$ioc_path" ]; then
+        cd "$ioc_path" || return
         history -s "cd \"$ioc_path\""
-        cd "$ioc_path"
         echo "Working directory: $PWD"
         echo "Tip: use 'cd -' to go back."
     else
@@ -130,6 +130,7 @@ ipython_debug_entrypoint() {
 #   Usage: hutchp_dir (hutch_name)
 #   Example: hutchp_dir rix
 hutchp_dir() {
+    # shellcheck disable=SC2164
     cd "/cds/group/pcds/pyps/apps/hutch-python/$1/"
 }
 
@@ -143,9 +144,11 @@ hutchp_logs() {
     date_path="${log_path}/${current_month}"
     if [ -d "$date_path" ]; then
         echo "$date_path"
+        # shellcheck disable=SC2164
         cd "$date_path"
     else
         echo "$log_path"
+        # shellcheck disable=SC2164
         cd "$log_path" && ls -d "${current_year}"*
     fi
 }
@@ -154,6 +157,7 @@ hutchp_logs() {
 #   Usage: hutch_config (hutch_name)
 #   Example: hutch_config rix
 hutch_config() {
+    # shellcheck disable=SC2164
     cd "/cds/group/pcds/config/$1/"
 }
 
