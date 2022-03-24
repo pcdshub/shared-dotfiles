@@ -21,9 +21,16 @@ Host pslogin-arch
     # Archiver API for programmatic access:
     LocalForward localhost:17668 pscaa02:17668
 
+# Primary development host "psbuild-rhel7" is commonly referred to as
+# just "psbuild".  There are older psbuild hosts, but they are no longer
+# in use, generally.
+Host psbuild
+    HostName psbuild-rhel7-01
+    ProxyJump %r@${PS_JUMP_HOST=pslogin}
+
 Host psbuild-rhel7
     HostName psbuild-rhel7-01
-    ProxyJump %r@pslogin
+    ProxyJump %r@${PS_JUMP_HOST=pslogin}
 
 Host psdev
     HostName psdev
@@ -1377,6 +1384,12 @@ Host github.com
     ForwardX11Trusted no
     PreferredAuthentications=publickey
     RequestTTY no
+
+Host centos7
+    HostName centos7.slac.stanford.edu
+    # GSSAPIDelegateCredentials yes
+    # GSSAPIAuthentication yes
+    PreferredAuthentications=gssapi,publickey,password
 
 Host *.slac.stanford.edu
     ProxyJump %r@psbuild-rhel7
