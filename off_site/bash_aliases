@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# ****************
+# ** Navigation **
+# ****************
+
+# "l" is short for "ls"
+alias l='ls'
+
+# "ll" is short for detailed file lists, with "ls -l":
+alias ll='ls -al'
+
+# "lh" is short for detailed file lists with human-readable units:
+alias lh='ls -Alh'
+
+# Going up? :)
+alias ..='cd ..'
+alias ..1='cd ..'
+alias ..2='cd ../..'
+alias ..3='cd ../../..'
+alias ..4='cd ../../../..'
+alias ..5='cd ../../../../..'
+alias ..6='cd ../../../../../..'
+alias ..7='cd ../../../../../../..'
+alias ..8='cd ../../../../../../../..'
+alias ..9='cd ../../../../../../../../..'
+
+# ***********
+# **  SSH  **
+# ***********
+
+# psb:
+#   psbuild-rhel7 is one of the most common hosts you will use.
+alias psb='ssh psbuild-rhel7'
+
+# *****************************
+# ** Python and hutch-python **
+# *****************************
+
+# These are shortcuts for individual hutches to start hutch-python:
+alias tmo3="ssh psbuild-rhel7 hpy3 tmo"
+alias txi3="ssh psbuild-rhel7 hpy3 txi"
+alias rix3="ssh psbuild-rhel7 hpy3 rix"
+alias xpp3="ssh psbuild-rhel7 hpy3 xpp"
+alias xcs3="ssh psbuild-rhel7 hpy3 xcs"
+alias mfx3="ssh psbuild-rhel7 hpy3 mfx"
+alias cxi3="ssh psbuild-rhel7 hpy3 cxi"
+alias mec3="ssh psbuild-rhel7 hpy3 mec"
+
+# ****************
+# ** General    **
+# ****************
+
+# This allows for aliases to be passed through to sudo
+alias sudo='sudo '
+
+
+# ****************
+# ** What now?  **
+# ****************
+#
+# Add some more aliases or modify the ones above to fit your needs.
+# Also, use shellcheck to see that you're writing scripts with good syntax.
+# The tool shellcheck is available in our pcds Python environment.
+#
+# For bash help, see https://tldp.org/LDP/Bash-Beginners-Guide/html/

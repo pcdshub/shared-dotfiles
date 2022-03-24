@@ -15,7 +15,7 @@ Host github.com
     PreferredAuthentications=publickey
     RequestTTY no
 
-Host !github.com
+Host *
     ForwardAgent yes
     ForwardX11 yes
     ForwardX11Trusted yes

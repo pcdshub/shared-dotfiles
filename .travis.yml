@@ -1,0 +1,11 @@
+language: bash
+os: linux
+dist: bionic
+
+addons:
+  apt:
+    packages:
+      - shellcheck
+
+script:
+ - bash ./run_tests.sh

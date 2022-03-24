@@ -1,0 +1,1390 @@
+# vi: ft=sshconfig shiftwidth=4 tabstop=4 expandtab
+#
+# This is a sample ssh configuration for accessing PCDS/ECS hosts.
+#
+# This could be called a remote or "home" configuration.
+#
+# You should use it on your own laptop and *not* place this in your PCDS
+# home directory configuration.
+
+Host pslogin
+    HostName pslogin.slac.stanford.edu
+    # ControlMaster can allow you to multiplex pslogin connections!
+    # ControlMaster auto
+    # ControlPath ~/.SSH-%r@%h:%p
+
+Host pslogin-arch
+    HostName pslogin.slac.stanford.edu
+    # Archiver management interface:
+    # use http://localhost:17665/mgmt/ui/index.html
+    LocalForward localhost:17665 pscaa02:17665
+    # Archiver API for programmatic access:
+    LocalForward localhost:17668 pscaa02:17668
+
+Host psbuild-rhel7
+    HostName psbuild-rhel7-01
+    ProxyJump %r@pslogin
+
+Host psdev
+    HostName psdev
+    ProxyJump %r@pslogin
+
+# plcprog-console access
+Host psbuild-plc
+    HostName psbuild-rhel7
+    ProxyJump %r@pslogin
+    ExitOnForwardFailure yes
+    ForwardAgent no
+    LocalForward localhost:3389 plcprog-console:3389
+    # The following indicates that we use this SSH connection just for remote
+    # desktop, nothing else.
+    RemoteCommand while true; do echo "** Ready for remote desktop connections (ctrl-c to exit) **"; read -n 1; done
+
+Host psbuild-socks
+    HostName psbuild-rhel7
+    ProxyJump %r@pslogin
+    ForwardAgent no
+    DynamicForward localhost:8080
+    ExitOnForwardFailure yes
+    PermitLocalCommand yes
+    LocalCommand echo "Running Chrome configured with a proxy..." && open -a 'Google Chrome' --args --proxy-server=socks5://localhost:8080
+    RemoteCommand while true; do echo "** SOCKS proxy ready (ctrl-c to exit) **"; read -n 1; done
+    # On MacOS, to start Google Chrome with this proxy:
+    #  open -a "Google Chrome" --args --proxy-server=socks5://localhost:8080
+    # You will need to enter URLs with "http://" preceding them, otherwise
+    # it may send you to Google. These examples should work:
+    #    http://ctl-logsrv01.pcdsn/
+    #    http://pscaa01.pcdsn:17665/mgmt/ui/index.html
+
+# pscron - used for scheduling cron job tasks
+Host pscron
+    ProxyJump %r@pslogin
+
+# Additional hosts from netconfig, hopping through psbuild-rhel7:
+# To rebuild or customize this list, use the following:
+# for host in $(netconfig search '*' --brief|sort|grep -e "^ioc-" -e "^ctl-" -e "-console" -e "-daq" | grep -v -e "psbuild" -e "pslogin"); do
+#     echo "Host $host"; echo "    ProxyJump %r@psbuild-rhel7";
+# done
+# --------------------------------------------------------------
+# ----------------- Miscellaneous host section -----------------
+# --------------------------------------------------------------
+
+Host amo-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host con-ics-mec-console-2
+    ProxyJump %r@psbuild-rhel7
+Host con-ics-xpp-daq
+    ProxyJump %r@psbuild-rhel7
+Host ctl-det-drp01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-det-drp01-fez
+    ProxyJump %r@psbuild-rhel7
+Host ctl-det-drp01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-hpl-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-hpl-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-hpl-srv02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-hpl-srv02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-cam-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-cam-01-drpneh
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-cam-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-cam-02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-cam-02-drp
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-cam-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-cam-03
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-misc-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-misc-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-mot-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-mot-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-rec02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-vac-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-kfe-vac-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv03
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv04
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv05
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv05-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv06
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv06-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv07
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-crix-srv07-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv03
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv04
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv05
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv05-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv06
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv06-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv07
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-ip1-srv07-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lhn-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lhn-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lhn-04
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lhn-04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lln-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lln-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lln-02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lln-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lln-03
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-lln-03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-srv02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-srv02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-srv03
+    ProxyJump %r@psbuild-rhel7
+Host ctl-las-srv03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-cam-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-cam-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-cam-02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-cam-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-misc-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-misc-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-mot-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-mot-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-rec02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-rec03
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-rec03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-vac-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-lfe-vac-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-logdev01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-loggrf01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-logsrv01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-logsrv02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-01-drpneh
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-02-drp
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-03
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-03-drp
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-cam-03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-crix-cam-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-crix-cam-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-crix-mot-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-crix-mot-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-crix-vac-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-crix-vac-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-fim-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-fim-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-mot-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-mot-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-mpod-fim-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-cam-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-cam-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-cam-02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-cam-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-mot-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-mot-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-vac-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-qrix-vac-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-vac-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-rix-vac-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-cam-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-cam-01-drpneh
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-cam-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-cam-02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-cam-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-fim-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-fim-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-fim-02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-fim-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-misc-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-misc-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-mot-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-mot-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-vac-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tmo-vac-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tst-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tst-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tst-pgp01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tst-pgp01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tst-pgp02
+    ProxyJump %r@psbuild-rhel7
+Host ctl-tst-pgp02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-ued-cam-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-ued-cam-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ctl-ued-pgp-01
+    ProxyJump %r@psbuild-rhel7
+Host ctl-ued-pgp-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host cxi-console
+    ProxyJump %r@psbuild-rhel7
+Host cxi-console-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host cxi-daq
+    ProxyJump %r@psbuild-rhel7
+Host cxi-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host cxi-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq01
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq02
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq03
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq04
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq05
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq05-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq06
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq06-fez
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq06-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq13
+    ProxyJump %r@psbuild-rhel7
+Host daq-tst-daq13-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host det-console
+    ProxyJump %r@psbuild-rhel7
+Host det-daq
+    ProxyJump %r@psbuild-rhel7
+Host det-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host det-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host gige-tst-daq-manta01
+    ProxyJump %r@psbuild-rhel7
+Host hpl-console
+    ProxyJump %r@psbuild-rhel7
+Host hpl-daq
+    ProxyJump %r@psbuild-rhel7
+Host hpl-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-aux-mon-devctl
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-acromag
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-acromag-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-cam2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-cam2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-cam4
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-cam4-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-cam5
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-cam5-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-cam6
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-det2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-dg1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-dg1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-itof
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-jungfrau01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-jungfrau01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-lassrv2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-lassrv2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-misc1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-misc1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-mot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-mot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-mot2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-mot2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-protura1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-protura1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-protura2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-protura2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-qadc
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-qadc-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-qadc-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec04-ana
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-rec04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-sc1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-sc1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-sc2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-sc2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-sc2-itof
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usr1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usr1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrcam02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrcam02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrio1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrio1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrmot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrmot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrmot2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrmot2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-usrvme02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-vacuum
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-vacuum-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-wave8
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-wave8-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-cxi-wave8-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-evg
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-pnccd01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-pnccd01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-pnccd02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-pnccd02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-portable1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-portable1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-portable2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-det-portable2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-fee-gasdet-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-fee-rec03-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-05
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-05-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-vme-hv1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-hpl-vme-hv2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-camplabview
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-hasdelay
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-meclogin
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-mecrptest1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-metrology
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-thz-linux1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-und-thz1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-und-thz2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-xcslogin
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-xcsportable2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-xppdmz
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ics-xpplogin
+    ProxyJump %r@psbuild-rhel7
+Host ioc-kfe-mpod-gmd-xgmd
+    ProxyJump %r@psbuild-rhel7
+Host ioc-kfe-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-kfe-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-kfe-srv02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-kfe-srv02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-kfe-srv04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-cast
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-cast-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-cxi-srv05
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-cxi-srv05-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-dcab
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-dcab-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-dig1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-dig2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-evr1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-evr2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-evr3
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-evr5
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-fors01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-fstiming
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-fstiming-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-evr01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-evr01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-evr02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-evr02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-evr03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-evr03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-srv06
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mec-srv06-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mfx-srv45
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-mfx-srv45-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-r51-33
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-srv03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-srv03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-srv04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-srv04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-sxr1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-sxr-cam2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-sxr-cam2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-sxr-cam3
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-sxr-cam3-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-und-phaseCavity
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-vme-test01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-vme-test02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-vme-test03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-vme-test04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-vme-test05
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-vme-test06
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-vme-test08
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-xcs-srv04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-las-xcs-srv04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-dirimg-spare
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-gasdet
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-gasdet-daq
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-gasdet-spare
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-homs-spare
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-kmono-daq
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-nfov1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-rec03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-rec03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-rec04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-srv03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-lfe-srv03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-cam04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-cam04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-evg
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-evr01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-evr01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-gige01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-gige01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-imb02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-imb02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-ipimb01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-ipimb01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-evr-01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-evr-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-las-gige04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-lasmot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-lasmot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-lpl01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-lpl01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-misc01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-misc01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-mot3
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-mot3-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-opal01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-opal01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-qadc
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-qadc-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-qadc-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-spl01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-spl01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-vacuum
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-vacuum-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-wave8
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-wave8-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mec-wave8-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-cam01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-cam01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-cam02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-cam02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-hera
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-hera-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-lens-mps
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-lens-mps-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-misc01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-misc01-ics
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-misc01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-mot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-mot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-rec02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-table
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-table-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-tfs
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-tfs-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-usr01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-usr01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-vacuum
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-vacuum-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-wave8
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-wave8-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-mfx-wave8-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-rix-mpod-01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-sxd-spec
+    ProxyJump %r@psbuild-rhel7
+Host ioc-sxd-spec-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-sxr-las2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-sxr-las3
+    ProxyJump %r@psbuild-rhel7
+Host ioc-sxr-las5
+    ProxyJump %r@psbuild-rhel7
+Host ioc-thz-fct01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-thz-fct01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-thz-vme01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tmo-mpod01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tmo-mpod02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tmo-mpod-fim-01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tmo-mpod-fim-02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tmo-mpod-portable02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-06
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-08
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-08-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-12
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-12-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-13
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-13-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-32bit
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-evg
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-fels01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-fels01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-hv
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-metrology
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-metrology-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-mpod-wiener
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-rec02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-rec03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-rec03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-rec10
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-rec10-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-tst-shutter
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ued-ccd01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-ued-ccd01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-und-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-und-rec01-ana
+    ProxyJump %r@psbuild-rhel7
+Host ioc-und-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-gige01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-gige01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-misc1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-misc1-ics
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-misc1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-mot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-mot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-mot2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-mot2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-qadc
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-qadc-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-rec04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-snd
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-snd-ics
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-snd-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-srv01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-srv01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-user1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-user1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-user2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-user2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-vacuum
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-vacuum-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-wave8
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-wave8-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xcs-wave8-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-gige01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-gige01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-gige02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-gige02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-gon
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-gon-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-ipimb
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-ipimb-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-las01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-las01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-misc01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-misc01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-mot01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-mot01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-osc01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-osc01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rec02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rec02-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rec03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rec03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rob01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rob01-ics
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-rob01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-usr01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-usr01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-vacuum
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-vacuum-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-wave8
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-wave8-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xpp-wave8-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-cxi-picker
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-evr01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-evr01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-hfx-cam1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-hxx-motvac1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-hxx-motvac1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-meccam02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mec-mot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mec-mot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mec-vac1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mec-vac1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mfxmot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mfxmot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-misc01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-misc01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-misc02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-misc02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mxtmirror
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-mxtmirror-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec02
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec02-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec03
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec03-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec04
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec04-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec05
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec05-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec06
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec06-ana
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec06-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec07
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec07-ana
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-rec07-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-vacuum
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-vacuum-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-vme01
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-wave8
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-wave8-fez
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-wave8-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-xcsmisc1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-xcsmisc1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-xcsmot1
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-xcsmot1-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-xcsmot2
+    ProxyJump %r@psbuild-rhel7
+Host ioc-xrt-xcsmot2-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host kfe-console
+    ProxyJump %r@psbuild-rhel7
+Host las-console
+    ProxyJump %r@psbuild-rhel7
+Host lfe-console
+    ProxyJump %r@psbuild-rhel7
+Host mcc-console
+    ProxyJump %r@psbuild-rhel7
+Host mec-console
+    ProxyJump %r@psbuild-rhel7
+Host mec-console-2
+    ProxyJump %r@psbuild-rhel7
+Host mec-console-2-fez
+    ProxyJump %r@psbuild-rhel7
+Host mec-console-2-ics
+    ProxyJump %r@psbuild-rhel7
+Host mec-console-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host mec-daq
+    ProxyJump %r@psbuild-rhel7
+Host mec-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host mec-daq-ics
+    ProxyJump %r@psbuild-rhel7
+Host mec-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host mfx-console
+    ProxyJump %r@psbuild-rhel7
+Host mfx-console-ics
+    ProxyJump %r@psbuild-rhel7
+Host mfx-console-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host mfx-daq
+    ProxyJump %r@psbuild-rhel7
+Host mfx-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host mfx-daq-ics
+    ProxyJump %r@psbuild-rhel7
+Host mfx-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host osw-daq-calients320
+    ProxyJump %r@psbuild-rhel7
+Host plcprog-console
+    ProxyJump %r@psbuild-rhel7
+Host plcprog-console02
+    ProxyJump %r@psbuild-rhel7
+Host plcprog-console02-tst
+    ProxyJump %r@psbuild-rhel7
+Host plcprog-console-dev
+    ProxyJump %r@psbuild-rhel7
+Host plcprog-console-dev-tst
+    ProxyJump %r@psbuild-rhel7
+Host plcprog-console-tst
+    ProxyJump %r@psbuild-rhel7
+Host power-tst-daq
+    ProxyJump %r@psbuild-rhel7
+Host pscag01-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host pscag01-daq-drp-neh
+    ProxyJump %r@psbuild-rhel7
+Host pscag02-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host pscag02-daq-drp-neh
+    ProxyJump %r@psbuild-rhel7
+Host pscag03-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host pscag03-daq-drp-neh
+    ProxyJump %r@psbuild-rhel7
+Host pscag04-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host pscag04-daq-drp-neh
+    ProxyJump %r@psbuild-rhel7
+Host pscag05-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host pscag05-daq-drp-neh
+    ProxyJump %r@psbuild-rhel7
+Host pscag06-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host pscag06-daq-drp-neh
+    ProxyJump %r@psbuild-rhel7
+Host rix-console
+    ProxyJump %r@psbuild-rhel7
+Host rix-console-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host rix-daq
+    ProxyJump %r@psbuild-rhel7
+Host rix-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host rix-daq-ics
+    ProxyJump %r@psbuild-rhel7
+Host rix-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host shm-daq-asc01
+    ProxyJump %r@psbuild-rhel7
+Host shm-daq-drp01
+    ProxyJump %r@psbuild-rhel7
+Host shm-neh-daq01
+    ProxyJump %r@psbuild-rhel7
+Host shm-rix-daq01
+    ProxyJump %r@psbuild-rhel7
+Host shm-tmo-daq01
+    ProxyJump %r@psbuild-rhel7
+Host swh-det-b57-daq
+    ProxyJump %r@psbuild-rhel7
+Host swh-mec-mezz-daq
+    ProxyJump %r@psbuild-rhel7
+Host swh-mfx-mezz-daq
+    ProxyJump %r@psbuild-rhel7
+Host swh-ued-b44-daq
+    ProxyJump %r@psbuild-rhel7
+Host swh-xpp-h3-daq
+    ProxyJump %r@psbuild-rhel7
+Host swh-xpp-mezz-daq
+    ProxyJump %r@psbuild-rhel7
+Host switch-amo-srvroom-daq
+    ProxyJump %r@psbuild-rhel7
+Host switch-cxi-mezz-daq
+    ProxyJump %r@psbuild-rhel7
+Host switch-mec-mezz-daq
+    ProxyJump %r@psbuild-rhel7
+Host switch-xcs-mezz-daq
+    ProxyJump %r@psbuild-rhel7
+Host tmo-console
+    ProxyJump %r@psbuild-rhel7
+Host tmo-daq
+    ProxyJump %r@psbuild-rhel7
+Host tmo-daq-drp
+    ProxyJump %r@psbuild-rhel7
+Host tmo-daq-ics
+    ProxyJump %r@psbuild-rhel7
+Host tmo-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ued-daq
+    ProxyJump %r@psbuild-rhel7
+Host ued-daq-01
+    ProxyJump %r@psbuild-rhel7
+Host ued-daq-01-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host ued-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host xcs-console
+    ProxyJump %r@psbuild-rhel7
+Host xcs-console-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host xcs-daq
+    ProxyJump %r@psbuild-rhel7
+Host xcs-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host xcs-daq-ics
+    ProxyJump %r@psbuild-rhel7
+Host xcs-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host xpp-daq
+    ProxyJump %r@psbuild-rhel7
+Host xpp-daq-fez
+    ProxyJump %r@psbuild-rhel7
+Host xpp-daq-ics
+    ProxyJump %r@psbuild-rhel7
+Host xpp-daq-ipmi
+    ProxyJump %r@psbuild-rhel7
+Host xtod-console-ics
+    ProxyJump %r@psbuild-rhel7
+
+# --------------------------------------------------------------
+# --------------End Miscellaneous host section -----------------
+# --------------------------------------------------------------
+
+Host github.com
+    HostName github.com
+    ForwardAgent no
+    ForwardX11 no
+    ForwardX11Trusted no
+    PreferredAuthentications=publickey
+    RequestTTY no
+
+Host *.slac.stanford.edu
+    ProxyJump %r@psbuild-rhel7
+
+Host *
+    ForwardAgent yes
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    XAuthLocation /opt/X11/bin/xauth
+    PreferredAuthentications=publickey,password
