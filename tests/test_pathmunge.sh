@@ -1,35 +1,32 @@
 #!/usr/bin/env bash
 
-echo "Bash version: $BASH_VERSION"
-echo "Loading assertions..."
 source assertions.sh
 
-test_header
+test_header "$0"
 
-echo "Loading helpers..."
-source ../helpers.sh
+source "../helpers.sh"
 
 assert_shellcheck "../helpers.sh"
 
 PATH=/usr/bin:A:A:B:C:D
-pathpurge A
+pathpurge "A"
 assert_equals "$PATH" "/usr/bin:B:C:D"
-pathpurge B
+pathpurge "B"
 assert_equals "$PATH" "/usr/bin:C:D"
-pathpurge C
+pathpurge "C"
 assert_equals "$PATH" "/usr/bin:D"
-pathpurge D
+pathpurge "D"
 assert_equals "$PATH" "/usr/bin"
 
-pathmunge .
+pathmunge "."
 assert_equals "$PATH" "$PWD:/usr/bin"
-pathpurge .
+pathpurge "."
 assert_equals "$PATH" "/usr/bin"
-pathmunge $PWD
+pathmunge "$PWD"
 assert_equals "$PATH" "$PWD:/usr/bin"
-pathpurge $PWD
+pathpurge "$PWD"
 assert_equals "$PATH" "/usr/bin"
-pathpurge $PWD
+pathpurge "$PWD"
 assert_equals "$PATH" "/usr/bin"
 
 test_footer

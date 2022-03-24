@@ -13,10 +13,10 @@ assert_equals() {
     value2=$2
     message=$3
     if [[ "$value1" != "$value2" ]]; then
-        echo "assert_equals failure: ${value1} != ${value2} $message"
+        echo "assert_equals failure: ${value1} != ${value2} $message" >/dev/stderr
         exit 1
     fi
-    let assertions+=1
+    (( assertions+=1 ))
 }
 
 assert_shellcheck() {
@@ -27,11 +27,11 @@ assert_shellcheck() {
     message=$2
     result=$(shellcheck "$script")
     if [[ "${result}" != "" ]]; then
-        echo "assert_shellcheck failure: $message"
-        echo "${result}"
+        echo "assert_shellcheck failure: $message" > /dev/stderr
+        echo "${result}" > /dev/stderr
         exit 1
     fi
-    let assertions+=1
+    (( assertions+=1 ))
 }
 
 test_header() {

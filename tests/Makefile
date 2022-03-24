@@ -1,9 +1,10 @@
 all: run_tests
 
 run_tests:
-	echo "Running tests..."
-	bash test_pathmunge.sh
-	bash test_pythonpathmunge.sh
+	@bash -c 'echo "Running tests on bash $${BASH_VERSION} ($$(which bash))"'
+	@for test_fn in test_*.sh; do \
+		bash $${test_fn}; \
+	done
 
 
 .PHONY: run_tests

@@ -1,35 +1,32 @@
 #!/usr/bin/env bash
 
-echo "Bash version: $BASH_VERSION"
-echo "Loading assertions..."
 source assertions.sh
 
-test_header $0
+test_header "$0"
 
-echo "Loading helpers..."
-source ../helpers.sh
+source "../helpers.sh"
 
 assert_shellcheck "../helpers.sh"
 
 PYTHONPATH=/usr/bin:A:A:B:C:D
-pythonpathpurge A
+pythonpathpurge "A"
 assert_equals "$PYTHONPATH" "/usr/bin:B:C:D"
-pythonpathpurge B
+pythonpathpurge "B"
 assert_equals "$PYTHONPATH" "/usr/bin:C:D"
-pythonpathpurge C
+pythonpathpurge "C"
 assert_equals "$PYTHONPATH" "/usr/bin:D"
-pythonpathpurge D
+pythonpathpurge "D"
 assert_equals "$PYTHONPATH" "/usr/bin"
 
-pythonpathmunge .
+pythonpathmunge "."
 assert_equals "$PYTHONPATH" "$PWD:/usr/bin"
-pythonpathpurge .
+pythonpathpurge "."
 assert_equals "$PYTHONPATH" "/usr/bin"
-pythonpathmunge $PWD
+pythonpathmunge "$PWD"
 assert_equals "$PYTHONPATH" "$PWD:/usr/bin"
-pythonpathpurge $PWD
+pythonpathpurge "$PWD"
 assert_equals "$PYTHONPATH" "/usr/bin"
-pythonpathpurge $PWD
+pythonpathpurge "$PWD"
 assert_equals "$PYTHONPATH" "/usr/bin"
 pythonpathpurge "/usr/bin"
 assert_equals "$PYTHONPATH" ""
