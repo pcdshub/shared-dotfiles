@@ -9,6 +9,8 @@ test_header
 echo "Loading helpers..."
 source ../helpers.sh
 
+assert_shellcheck "../helpers.sh"
+
 PATH=/usr/bin:A:A:B:C:D
 pathpurge A
 assert_equals "$PATH" "/usr/bin:B:C:D"

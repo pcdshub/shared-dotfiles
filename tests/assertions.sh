@@ -19,6 +19,21 @@ assert_equals() {
     let assertions+=1
 }
 
+assert_shellcheck() {
+    local script
+    local message
+    local result
+    script=$1
+    message=$2
+    result=$(shellcheck "$script")
+    if [[ "${result}" != "" ]]; then
+        echo "assert_shellcheck failure: $message"
+        echo "${result}"
+        exit 1
+    fi
+    let assertions+=1
+}
+
 test_header() {
     test_identifier="$1"
     echo "$test_identifier: Running tests..."

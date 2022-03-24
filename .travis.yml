@@ -1,0 +1,14 @@
+language: bash
+os: linux
+dist: bionic
+
+addons:
+  apt:
+    packages:
+      - shellcheck
+
+script:
+ - shellcheck *.sh
+ - shellcheck off_site/*.sh
+ - shellcheck on_site/*.sh
+ - cd tests && make

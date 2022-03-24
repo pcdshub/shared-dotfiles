@@ -9,6 +9,8 @@ test_header $0
 echo "Loading helpers..."
 source ../helpers.sh
 
+assert_shellcheck "../helpers.sh"
+
 PYTHONPATH=/usr/bin:A:A:B:C:D
 pythonpathpurge A
 assert_equals "$PYTHONPATH" "/usr/bin:B:C:D"
@@ -29,5 +31,7 @@ pythonpathpurge $PWD
 assert_equals "$PYTHONPATH" "/usr/bin"
 pythonpathpurge $PWD
 assert_equals "$PYTHONPATH" "/usr/bin"
+pythonpathpurge "/usr/bin"
+assert_equals "$PYTHONPATH" ""
 
 test_footer
