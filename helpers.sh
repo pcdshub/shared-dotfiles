@@ -2,6 +2,10 @@
 #
 # This file contains some helper scripts for your dotfiles to reuse.
 #
+# Certain functions were borrowed, adapted, and rewritten from other sources,
+# including:
+# * https://github.com/pcdshub/epics-setup
+
 
 if [ -z "$_PCDS_CONDA_FOR_UTILS" ]; then
     _PCDS_CONDA_FOR_UTILS=/cds/group/pcds/pyps/conda/py39/envs/pcds-5.3.0/
@@ -111,20 +115,140 @@ _helper_get_ioc_info_json() {
     fi
 }
 
-# pathmunge
-#   Add a path to your $PATH, if it's not there already.
-#   Usage: pathmunge (path) [after]
-#   Example: pathmunge $HOME/bin
-#   Example: pathmunge $HOME/lower-priority/bin after
-pathmunge () {
-    case ":${PATH}:" in
-        *:"$1":*)
-            ;;
-        *)
-            if [ "$2" = "after" ] ; then
-                PATH=$PATH:$1
-            else
-                PATH=$1:$PATH
+
+# _helper_remove_from_list
+#   Remove an item from a list *and* deduplicate the list.
+#   Usage: _helper_remove_from_list (to_remove) (from) [delimiter ":"]
+_helper_remove_from_list() {
+    local to_remove
+    local value
+    local delimiter
+    local seen
+    local -a valid_items
+    local IFS
+
+	[ $# -lt 2 ] && return;
+
+    to_remove="$1"
+    value="$2"
+    delimiter="${3-:}"
+    valid_items=()
+    while IFS= read -r item; do
+        seen=0
+        for other in "${valid_items[@]}"; do
+            if [[ "$other" == "$item" ]]; then
+                seen=1
             fi
-    esac
+        done
+        if [[ seen -eq 0 && "$item" != "$to_remove" && "$item" != "${to_remove}/" && "$item" != "" ]]; then
+            valid_items+=("$item")
+        fi
+    done < <(echo "${value}${delimiter}" | tr "${delimiter}" "\n" )
+
+    IFS=":"
+    echo "${valid_items[*]}"
+}
+
+# _helper_readlink
+#   Portable 'readlink -f' alternative for directories which works on macOS/Linux
+#   Usage: _helper_readlink pathname
+_helper_readlink() { 
+    (cd "$1" && pwd -P) 2>/dev/null || echo "$1"
+}
+
+
+# pathpurge
+#  Remove a path from ${PATH}
+#  	  Usage: pathpurge (dirname) [dirname ...]
+pathpurge()
+{
+	if [ $# -eq 0 ] ; then
+		echo "Usage: Usage: pathpurge dirname [dirname ...]"
+		return
+	fi
+    local to_remove
+    local canonical
+	while [ $# -gt 0 ] ;
+	do
+        to_remove="$1"
+        if [[ "$to_remove" == "." || "$to_remove" == ".." ]] ; then
+            to_remove=$( _helper_readlink "$to_remove" )
+        fi
+        # Remove the path as given
+        PATH=$(_helper_remove_from_list "$to_remove" "$PATH" ":")
+        canonical=$(_helper_readlink "$to_remove")
+        if [[ "$canonical" != "$to_remove" ]]; then
+            # Remove the canonical path as well
+            PATH=$(_helper_remove_from_list "$canonical" "$PATH" ":")
+        fi
+		shift
+	done
+}
+
+# pathmunge
+#  Add a path to the beginning of ${PATH}
+#  	  Usage: pathmunge (dirname)
+pathmunge ()
+{
+    local to_add
+    to_add="$1"
+	if [ "$to_add" == "" ] ; then
+		echo "Usage: pathmunge dirname"
+		return
+	fi
+	if [ ! -d "$to_add" ] ; then
+		echo "pathmunge: $to_add is not a directory"
+		return
+	fi
+    to_add=$(_helper_readlink "$to_add")
+	if [ "$PATH" == "" ] ; then
+		export PATH=$to_add
+		return
+	fi
+	pathpurge "$to_add"
+	export PATH=$to_add:$PATH
+}
+
+# pythonpathpurge
+#  Remove a path from ${PYTHONPATH}
+#  	  Usage: pythonpathpurge (dirname)
+pythonpathpurge()
+{
+	if [ $# -eq 0 ] ; then
+		echo "Usage: Usage: pythonpathpurge dirname [dirname ...]"
+		return
+	fi
+	while [ $# -gt 0 ] ;
+	do
+        to_remove="$1"
+        if [[ "$to_remove" == "." || "$to_remove" == ".." ]] ; then
+            to_remove=$( _helper_readlink "$to_remove" )
+        fi
+        PYTHONPATH=$(_helper_remove_from_list "$to_remove" "$PYTHONPATH" ":")
+		shift
+	done
+}
+
+# pythonpathmunge
+#  Add a path to the beginning of ${PYTHONPATH}
+#  	  Usage: pythonpathmunge (dirname)
+pythonpathmunge ()
+{
+    local to_add
+    to_add="$1"
+	if [ "$to_add" == "" ] ; then
+		echo "Usage: pythonpathmunge dirname"
+		return
+	fi
+	if [ ! -d "$to_add" ] ; then
+		echo "pythonpathmunge: $to_add is not a directory"
+		return
+	fi
+    to_add=$(_helper_readlink "$to_add")
+	if [ "$PYTHONPATH" == "" ] ; then
+		export PYTHONPATH=$to_add
+		return
+	fi
+	pathpurge "$to_add"
+	export PYTHONPATH=$to_add:$PYTHONPATH
 }
