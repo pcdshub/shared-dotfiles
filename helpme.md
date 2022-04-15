@@ -28,7 +28,9 @@ https://confluence.slac.stanford.edu/display/PCDS/PCDS+Conda+Python+Environments
 Generally, you should only need to run the following on a machine like
 psbuild-rhel7:
 
-    $ source /cds/group/pcds/pyps/conda/pcds_conda
+```bash
+$ source /cds/group/pcds/pyps/conda/pcds_conda
+```
 
 And note that the source of these configurations is:
 <https://github.com/pcdshub/pcds-envs>
@@ -207,10 +209,10 @@ To use command-line tooling such as curl or wget, set the following environment
 variables. Not all hosts will need this - pslogin, psbuild-rhel7 and similar
 have direct access.
 
-.. code::
-
-    export http_proxy=http://psproxy:3128
-    export https_proxy=http://psproxy:3128
+```bash
+export http_proxy=http://psproxy:3128
+export https_proxy=http://psproxy:3128
+```
 
 Alternatively, ensure that your firefox settings use the above proxy settings
 in preferences.

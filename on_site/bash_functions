@@ -180,7 +180,7 @@ hutch_config() {
 #   Example: helpme
 helpme() {
     # shellcheck disable=SC2154
-    less "$dotfiles/helpme.rst"
+    less "$dotfiles/helpme.md"
 }
 
 # ****************
