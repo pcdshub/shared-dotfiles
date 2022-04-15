@@ -1,10 +1,77 @@
 Help
 ====
 
-This file may not be the most up-to-date.  Check confluence for further details:
+This file may not be the most up-to-date.  Check the following for up-to-date
+information.
 
 https://confluence.slac.stanford.edu/display/PCDS/How+to+access+PCDS+environments
+https://github.com/pcdshub/shared-dotfiles
+https://github.com/pcdshub/engineering_tools/blob/master/README.md
 
+Tools
+=====
+
+Engineering Tools
+-----------------
+
+* ``ami_offline_psana``
+* ``archive-status``
+* ``camViewer``
+* ``checkcnf``
+* ``configdb_readxtc``
+* ``daq_control``
+* ``daq_waitwin``
+* ``dev_conda``
+* ``elog_par_post``
+* ``eloggrabber``
+* ``epicsArchChecker``
+* ``epix_gains``
+* ``evrStatus``
+* ``get_curr_exp``
+* ``get_hutch_name``
+* ``get_info``
+* ``get_lastRun``
+* ``gige``
+* ``grep_ioc``
+* ``grep_pv``
+* ``imgr``
+* ``iocmanager``
+* ``ioctool``
+* ``ipmConfigEpics``
+* ``makepeds``
+* ``makepeds_psana``
+* ``motor-expert-screen``
+* ``motor-typhos``
+* ``motorInfo``
+* ``pcds_conda``
+* ``pkg_release``
+* ``pmgr``
+* ``pydev_env``
+* ``pydev_register``
+* ``pyps-deploy``
+* ``questionnaire_tools``
+* ``restartdaq``
+* ``serverStat``
+* ``startami``
+* ``stopami``
+* ``stopdaq``
+* ``takepeds``
+* ``wheredaq``
+* ``wherepsana``
+* ``pfeiffer_serial_tools``
+* ``BLmotors``
+
+
+Navigation
+----------
+
+*sshcd*
+
+```bash
+sshcd - ssh to a host, retaining your current directory
+  Usage:   sshcd hostname [optional command to run]
+  Example: sshcd lfe-console ls -l
+```
 
 Shared filesystems
 ==================
