@@ -1,0 +1,216 @@
+Help
+====
+
+This file may not be the most up-to-date.  Check confluence for further details:
+
+https://confluence.slac.stanford.edu/display/PCDS/How+to+access+PCDS+environments
+
+
+Shared filesystems
+==================
+
+| Directory        | Description                                                    |
+|------------------|----------------------------------------------------------------|
+| /afs             | Global, multi-facility shared filesystem                       |
+| /afs/slac/       | SLAC's part of AFS                                             |
+| /cds/            | Shared weka fileystem (faster, more modern than AFS)           |
+| /cds/data/       | Shared weka filesystem for data storage                        |
+| /cds/group/pcds/ | PCDS's group location for weka                                 |
+| /cds/home/       | Base directory for PCDS users' home storage (i.e., your $HOME) |
+| /reg/g/          | Older, deprecated path for /cds/group                          |
+
+Python environments
+-------------------
+
+To access our deployed conda environments, see: 
+https://confluence.slac.stanford.edu/display/PCDS/PCDS+Conda+Python+Environments
+
+Generally, you should only need to run the following on a machine like
+psbuild-rhel7:
+
+    $ source /cds/group/pcds/pyps/conda/pcds_conda
+
+And note that the source of these configurations is:
+<https://github.com/pcdshub/pcds-envs>
+
+Happi configuration
+-------------------
+
+HAPPI_CFG is set automatically in our Python environment scripts. We store that
+configuration in 
+
+``/cds/group/pcds/pyps/apps/hutch-python/device_config``
+
+and push it to <https://github.com/pcdshub/device_config/>
+
+Hutch-python configuration paths
+--------------------------------
+
+See [Hutch Python
+Seminar](https://confluence.slac.stanford.edu/display/PCDS/Hutch+Python+Seminar)
+for more details.  You must be added to the relevant instrument group
+(ps-<hutch>, e.g. ps-xpp) for write access to these files 
+
+For a given hutch, e.g., `xpp`:
+
+| Directory                                          | Description                                                                                           |
+|----------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/            | Base configuration directory, a git repository                                                        |
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/xppenv      | Environment script - source this to enter XPP's pcds-envs-based python environment                    |
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/xpppython   | Script to run XPP's hutch-python                                                                      |
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/set-dev     | Tool for using a development version of a given package                                               |
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/xpp         | Python package named "xpp", imported by default in the environment (see conf.yml)                     |
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/experiments | Per-experiment configurations, loaded automatically by xppython                                       |
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/conf.yml    | Configuration file that indicates to load the happi database file and xpp.beamline as above (details) |
+| /reg/g/pcds/pyps/apps/hutch-python/xpp/presets/    | Directory where per-positioner (motor) presets are stored                                             |
+
+PLC environment
+===============
+
+The plcprog-console node allows for access to production and test network PLCs.
+Access to its is documented above in the "remote access" section.
+
+We have our own suite of tools for generating IOCs and checking PLC projects
+called "[ads-deploy](https://github.com/pcdshub/ads-deploy)" which wraps
+"[pytmc](https://github.com/pcdshub/pytmc)".
+
+You can use ads-deploy easily on plcprog-console by following the [guide
+here](https://confluence.slac.stanford.edu/display/PCDS/ads-deploy+on+plcprog-console),
+or alternatively on *your own* machine with [this
+guide](https://confluence.slac.stanford.edu/pages/viewpage.action?pageId=295099767).
+
+Engineering tools
+=================
+
+Tools that are of general use to PCDS engineers called
+[engineering_tools](https://github.com/pcdshub/engineering_tools) are deployed
+and available in: `/reg/g/pcds/engineering_tools/latest/`
+
+shared-dotfiles includes engineering tools in your PATH by default.
+
+Git
+===
+
+While not an environment per se, we have git repositories stored on AFS. They
+are located here: `/afs/slac/g/cd/swe/git/repos/`
+
+Shared IOCs, for example, are located here:
+`/afs/slac/g/cd/swe/git/repos/package/epics/ioc/common/`
+
+EPICS environments
+==================
+
+To use the latest EPICS environment, source the following:
+
+Additional shortcuts are automatically included with the above when using the
+bash shell. You can see those shortcuts in:
+
+This includes commonly used shortcuts like the LUCID ones (`kfe`, `lfe`, `rix`,
+etc.) and others listed in [PCDS EPICS Shortcuts
+(pcds_shortcuts.sh)](https://confluence.slac.stanford.edu/pages/viewpage.action?pageId=295099127)
+
+Old (maybe outdated) software environments
+==========================================
+
+pkg_mgr / pspkg
+---------------
+
+`/reg/g/pcds/pkg_mgr` defines a set of isolated environments. Some may still be
+in use, but largely we are working with our conda environments (listed above)
+now.
+
+See [Package
+Manager](https://confluence.slac.stanford.edu/display/PCDSArchive/Package+Manager)
+(archived) for more details.
+
+Releases are defined in `/reg/g/pcds/pkg_mgr/source/releases`
+
+Per-package information is defined `/reg/g/pcds/pkg_mgr/source/pkg_info`
+
+Released packages and environments are here `/reg/g/pcds/pkg_mgr/release`
+
+controls-basic
+--------------
+
+There are some special pkg_mgr environments that remain in use for booting IOCs:
+
+`/reg/g/pcds/pkg_mgr/release/controls-basic-0.0.1`
+
+(See [Detailed Soft IOC boot
+process](https://confluence.slac.stanford.edu/display/PCDS/Detailed+Soft+IOC+boot+process)
+for ~~too much~~ more information)
+
+Per-hutch configuration directories
+===================================
+
+Per-hutch IOC configuration and tooling can be found here:
+`/cds/group/pcds/pyps/config/`
+
+Each hutch has its own configured set of tools, such as those for XCS as of January 2022:
+
+| Directory                                     | Description                                                    |
+|-----------------------------------------------|----------------------------------------------------------------|
+| /cds/group/pcds/pyps/config/xcs/camrecord.sh  | Controls recorder                                              |
+| /cds/group/pcds/pyps/config/xcs/camviewer.sh  | Camera viewer tool                                             |
+| /cds/group/pcds/pyps/config/xcs/expstate.sh   | Experiment state tracking tool (for XCS)                       |
+| /cds/group/pcds/pyps/config/xcs/iocmanager.sh | IOC manager (for XCS) to start/stop/add new IOCs (staff guide) |
+| /cds/group/pcds/pyps/config/xcs/pmgr.sh       | Parameter manager (for XCS)                                    |
+| /cds/group/pcds/pyps/config/xcs/trigtool.sh   | EVR Trigger Tool                                               |
+
+
+Per-user important directories
+==============================
+
+``/cds/group/pcds/epics-dev/${USER}`` is the top-level directory for iocs for
+${USER}. You may need to create your own directory here.
+
+IOC data directories and important files
+========================================
+
+| Directory                                              | Description                                                                                                                                                          |
+|--------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /cds/group/pcds/epics/ioc/<area>/<ioc-name>/<version>/ | Released IOCs go here, on a per-hutch, per-IOC, and per-released version. These files should not be changed in-place. Clone from git and follow the release process. |
+| /cds/data/iocData/                                     | Top-level directory for IOC data.  Subdirectories are created on a per-IOC basis.                                                                                    |
+| /cds/data/iocData/*/iocInfo/IOC.log                    | The IOC log file.                                                                                                                                                    |
+| /cds/data/iocData/*/iocInfo/IOC.pvlist                 | The IOC's auto-generated list of PVs.                                                                                                                                |
+| /cds/data/iocData/*/iocInfo/IOC.epicsEnvShow           | Created at each IOC startup with a list of the EPICS environment variables and their values                                                                          |
+| /cds/data/iocData/*/autosave/*.sav                     | PV state is saved to these files (generated periodically by the IOC support module autosave)                                                                         |
+| /cds/data/iocData/.zfs/snapshot                        | 30 days of daily snapshots of backed up iocData. Weekly and monthly snapshots are on a separate server (psbackup02)                                                  |
+
+
+#### How do these files get generated?
+
+The above files and directories are created through a rather complicated
+process.
+
+If you *really* need to get into the weeds of it - for issue debugging or just
+a general interest - the following document may be of use to you: [Detailed
+Soft IOC boot
+process](https://confluence.slac.stanford.edu/display/PCDS/Detailed+Soft+IOC+boot+process)
+
+Otherwise, just ask an expert!
+
+Web-facing applications
+=======================
+
+| Directory                                     | Description                                                          |
+|-----------------------------------------------|----------------------------------------------------------------------|
+| /cds/group/psdm/web/ws/prod/apps              | The experimental logbook, questionnaire, and related web apps source |
+
+Websites
+========
+
+Accessing websites from hutches without direct internet access
+--------------------------------------------------------------
+
+To use command-line tooling such as curl or wget, set the following environment
+variables. Not all hosts will need this - pslogin, psbuild-rhel7 and similar
+have direct access.
+
+.. code::
+
+    export http_proxy=http://psproxy:3128
+    export https_proxy=http://psproxy:3128
+
+Alternatively, ensure that your firefox settings use the above proxy settings
+in preferences.

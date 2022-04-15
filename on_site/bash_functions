@@ -175,6 +175,14 @@ hutch_config() {
     cd "/cds/group/pcds/config/$hutch/"
 }
 
+# helpme
+#   Usage: helpme
+#   Example: helpme
+helpme() {
+    # shellcheck disable=SC2154
+    less "$dotfiles/helpme.rst"
+}
+
 # ****************
 # ** What now?  **
 # ****************
