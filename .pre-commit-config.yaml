@@ -1,15 +1,31 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.1.0
+  hooks:
+  - id: no-commit-to-branch
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: check-case-conflict
+  - id: check-json
+  - id: check-merge-conflict
+  - id: check-symlinks
+  - id: check-xml
+  - id: check-yaml
+
+repos:
+-   repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.8.0
     hooks:
-    -   id: no-commit-to-branch
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-case-conflict
-    -   id: check-json
-    -   id: check-merge-conflict
-    -   id: check-symlinks
-    -   id: check-xml
-    -   id: check-yaml
+    - id: shellcheck
+      types: []  # Skips non-.sh files without this
+      files: |
+        (?x)^(
+            on_site/bash.*$|
+            off_site/bash.*$|
+            tests/.*\.sh$|
+            .*\.sh$
+        )$
+      exclude: tests/_shellcheck_bad.sh
+#     args: ["--severity=warning"]  # Optionally only show errors and warnings

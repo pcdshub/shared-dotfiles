@@ -152,7 +152,7 @@ _helper_remove_from_list () {
 # _helper_readlink
 #   Portable 'readlink -f' alternative for directories which works on macOS/Linux
 #   Usage: _helper_readlink pathname
-_helper_readlink() { 
+_helper_readlink() {
     (cd "$1" && pwd -P) 2>/dev/null || echo "$1"
 }
 
