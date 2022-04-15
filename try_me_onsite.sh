@@ -2,7 +2,7 @@
 
 
 if [ "$0" != "bash" ]; then
-    echo "$ bash --rcfile try_me.sh"
+    echo "$ bash --rcfile try_me_onsite.sh"
     echo
     echo "If you find your existing settings are getting in the way of trying shared-dotfiles,"
     echo "try using the following instead:"
