@@ -22,6 +22,9 @@ export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\
 #  * Having trouble exiting it? Type ":wq!" to save and quit.
 export EDITOR=vim
 
+# Tell "grep" to use color, when possible
+export GREP_OPTIONS="--color=auto"
+
 # If you have aliases and functions defined, let's use them:
 [ -f "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
 # If you have additional aliases to add, put them in this file!
@@ -196,7 +199,9 @@ esac
 # ** PATH modification **
 # ***********************
 
-# ``pathmunge`` is a utility which will modify your PATH.
+# ``pathmunge`` is a utility which will modify your PATH.  It adds a path
+# to the beginning of the variable PATH, which is where your shell looks for
+# executables and scripts.
 pathmunge /reg/common/tools/bin
 # /reg/common/tools/bin contains scripts such as:
 #  * Tools for inspecting or interacting with released EPICS modules:
@@ -215,6 +220,24 @@ pathmunge /reg/g/pcds/engineering_tools/latest-released/scripts
 #  * General tools of use to ECS engineers
 #    For documentation, see: https://github.com/pcdshub/engineering_tools
 
+# *Optional*
+# Do you work in a specific hutch? You may want to use their utilities.
+# Uncomment applicable ones here:
+#     pathmunge /cds/home/opr/cxiopr/bin
+#     pathmunge /cds/home/opr/detopr/bin
+#     pathmunge /cds/home/opr/hplopr/bin
+#     pathmunge /cds/home/opr/mecopr/bin
+#     pathmunge /cds/home/opr/mfxopr/bin
+#     pathmunge /cds/home/opr/rixopr/bin
+#     pathmunge /cds/home/opr/tmoopr/bin
+#     pathmunge /cds/home/opr/uedopr/bin
+#     pathmunge /cds/home/opr/xcsopr/bin
+#     pathmunge /cds/home/opr/xppopr/bin
+
+# *Optional*
+# Do you work with accelerator-side tools often? Consider uncommenting the
+# following if so:
+#     pathmunge /afs/slac/g/lcls/tools/script
 
 # *************************
 # ** Navigation settings **

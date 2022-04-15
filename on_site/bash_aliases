@@ -4,6 +4,9 @@
 # ** Navigation **
 # ****************
 
+# Add color coding of files and directories:
+alias ls='ls --color'
+
 # "l" is short for "ls"
 alias l='ls'
 
@@ -12,6 +15,9 @@ alias ll='ls -al'
 
 # "lh" is short for detailed file lists with human-readable units:
 alias lh='ls -Alh'
+
+# "lt" lists files backwards in time since last edit
+alias lt='ls -cltrh'
 
 # Going up? :)
 alias ..='cd ..'
