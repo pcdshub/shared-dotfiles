@@ -57,12 +57,12 @@ have before running them.
   tag.
 * ``pmgr`` parameter manager tool.
 * ``pydev_env`` Source this file to activate a development environment based on
-  the latest shared environment and on past calls to pydev\_register``.
-* ``pydev\_register``  Use this script to register development packages so
+  the latest shared environment and on past calls to pydev_register``.
+* ``pydev_register``  Use this script to register development packages so
   that they will be available when you source pydev_env 
 * ``pyps-deploy`` Sets up a pyps/apps deployment for a particular github python
   package.
-* ``questionnaire\_tools`` tools for interacting with the questionnaire.
+* ``questionnaire_tools`` tools for interacting with the questionnaire.
 * ``restartdaq`` restart the DAQ.
 * ``serverStat`` check the status of a server or restart it.
 * ``startami`` start a new AMI session.
