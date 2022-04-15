@@ -127,25 +127,27 @@ ipython_debug_entrypoint() {
 }
 
 # hutchp_dir - go to the per-hutch hutch-python configuration directory.
-#   Usage: hutchp_dir (hutch_name)
+#   Usage: hutchp_dir [hutch_name]
 #   Example: hutchp_dir rix
 hutchp_dir() {
-    # shellcheck disable=SC2164
-    cd "/cds/group/pcds/pyps/apps/hutch-python/$1/"
+    hutch=$(_helper_maybe_get_hutch "$1")
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
+    cd "/cds/group/pcds/pyps/apps/hutch-python/$hutch/" || return
 }
 
 # hutchp_logs - go to the per-hutch hutch-python log directory.
 #   Usage: hutchp_logs (hutch_name)
 #   Example: hutchp_logs rix
 hutchp_logs() {
-    log_path="/cds/group/pcds/pyps/apps/hutch-python/$1/logs"
+    hutch=$(_helper_maybe_get_hutch "$1")
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
+    log_path="/cds/group/pcds/pyps/apps/hutch-python/${hutch}/logs"
     current_year=$(date -u +"%Y_")
     current_month=$(date -u +"%Y_%m")
     date_path="${log_path}/${current_month}"
     if [ -d "$date_path" ]; then
         echo "$date_path"
-        # shellcheck disable=SC2164
-        cd "$date_path"
+        cd "$date_path" || return
     else
         echo "$log_path"
         # shellcheck disable=SC2164
@@ -157,8 +159,10 @@ hutchp_logs() {
 #   Usage: hutch_config (hutch_name)
 #   Example: hutch_config rix
 hutch_config() {
+    hutch=$(_helper_maybe_get_hutch "$1")
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
     # shellcheck disable=SC2164
-    cd "/cds/group/pcds/config/$1/"
+    cd "/cds/group/pcds/config/$hutch/"
 }
 
 # ****************
