@@ -11,7 +11,8 @@ configuration (.bashrc) and SSH configuration (.ssh/config).
 $ ssh psbuild-rhel7
 $ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
 $ cd dotfiles
-$ bash --rcfile try_me.sh
+$ ./try_me_onsite.sh
+# And read the instructions
 ```
 
 ### Out-of-the-box
@@ -24,6 +25,8 @@ $ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
 $ cd dotfiles
 $ bash use_dotfiles.sh
 ```
+
+You will only need to do this once.
 
 ### Advanced or custom usage
 

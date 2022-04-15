@@ -11,7 +11,7 @@ if [ -z "$_PCDS_CONDA_FOR_UTILS" ]; then
     _PCDS_CONDA_FOR_UTILS=/cds/group/pcds/pyps/conda/py39/envs/pcds-5.3.0/
 fi
 
-# ALL_IOCS_TEXT=/cds/data/iocData/.all_iocs/iocs.txt
+_ALL_IOCS_TEXT=/cds/data/iocData/.all_iocs/iocs.txt
 _ALL_IOCS_JSON=/cds/data/iocData/.all_iocs/iocs.json
 
 
@@ -149,10 +149,21 @@ _helper_remove_from_list () {
     echo "${valid_items[*]}"
 }
 
+# _helper_maybe_get_hutch
+#   If unspecified, get the current hutch.
+#   Usage: _helper_maybe_get_hutch [hutchname]
+_helper_maybe_get_hutch() {
+    if [ -z "$1" ]; then
+        get_hutch_name;
+    else
+        echo "$1";
+    fi
+}
+
 # _helper_readlink
 #   Portable 'readlink -f' alternative for directories which works on macOS/Linux
 #   Usage: _helper_readlink pathname
-_helper_readlink() { 
+_helper_readlink() {
     (cd "$1" && pwd -P) 2>/dev/null || echo "$1"
 }
 

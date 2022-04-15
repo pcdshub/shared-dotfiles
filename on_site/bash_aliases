@@ -4,6 +4,9 @@
 # ** Navigation **
 # ****************
 
+# Add color coding of files and directories:
+alias ls='ls --color'
+
 # "l" is short for "ls"
 alias l='ls'
 
@@ -13,7 +16,11 @@ alias ll='ls -al'
 # "lh" is short for detailed file lists with human-readable units:
 alias lh='ls -Alh'
 
+# "lt" lists files backwards in time since last edit
+alias lt='ls -cltrh'
+
 # Going up? :)
+alias cd..='cd ..'
 alias ..='cd ..'
 alias ..1='cd ..'
 alias ..2='cd ../..'
@@ -24,6 +31,13 @@ alias ..6='cd ../../../../../..'
 alias ..7='cd ../../../../../../..'
 alias ..8='cd ../../../../../../../..'
 alias ..9='cd ../../../../../../../../..'
+
+# Open the most-recently-changed subdirectory of the current directory:
+alias cdnewest='cd `ls -td --color=never */ | head -1`'
+
+# Still there? Did you know ``cd -`` will take you back to the previous
+# directory you were in?  Your current directory is $PWD and your previous one
+# is $OLDPWD.
 
 # ***********
 # **  SSH  **
@@ -66,6 +80,14 @@ hpy3() {
 # This allows for aliases to be passed through to sudo
 alias sudo='sudo '
 
+
+# ************
+# ** EPICS  **
+# ************
+
+# Want to get enum information from a PV? Use this:
+alias cagetenum='caget -d 31'
+alias cagetstring='caget -S'
 
 # ****************
 # ** What now?  **

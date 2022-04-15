@@ -41,22 +41,35 @@ ioclog() {
 }
 
 # Find a currently-deployed IOC with a bit more details:
-#  Usage: find_ioc (iocname)
-#  Example: find_ioc ioc-xpp-gige-las01
-#  Example: find_ioc ioc-xpp-.*-las01
+#  Usage: which_ioc [iocname]
+#  Example: which_ioc
+#  Example: which_ioc ioc-xpp-gige-las01
+#  Example: which_ioc ioc-xpp-.*-las01
 #  Full version is available in a table here:
 #       https://confluence.slac.stanford.edu/display/PCDS/EPICS+IOCs+Deployed+in+IOC+Manager
 #  Note: this is derived from "whatrecord iocmanager-loader" and is run on a
 #        personal cron job.
-grep_ioc() {
-    local ioc_name=$1
+which_ioc() {
+    local to_find=$1
     local fzf
     fzf=$(_helper_find_fzf)
     if [ -z "$fzf" ]; then
-        grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
+        grep -i -e "$to_find" "$_ALL_IOCS_TEXT"
     else
-        $fzf +m -q "$ioc_name" < /cds/data/iocData/.all_iocs/iocs.txt
+        $fzf +m -q "$to_find" < "$_ALL_IOCS_TEXT"
     fi
+}
+
+# Find a currently-deployed IOC with a bit more details, in JSON:
+#  Usage: which_ioc_json [iocname]
+#  Example: which_ioc_json
+#  Example: which_ioc_json ioc-xpp-gige-las01
+#  Example: which_ioc_json ioc-xpp-.*-las01
+which_ioc_json() {
+    local to_find=$1
+    local ioc_name
+    ioc_name=$( which_ioc "$to_find" | cut -d "|" -f 2 | sed -e "s/\s*//g" )
+    _helper_get_ioc_info_json "$ioc_name"
 }
 
 # Go to an IOC data directory (with fuzzy searching).
@@ -73,13 +86,10 @@ iocdata() {
 #  Example: cdioc ioc-xcs
 #  For each example, user input is required to pick the IOC.
 cdioc() {
-    local ioc_name
     local ioc_path
     local ioc_startup
     local jq
-    ioc_name=$( grep_ioc "$@" | cut -d "|" -f 2 | sed -e "s/\s*//g" )
-    echo "IOC name: $ioc_name"
-    ioc_info_json=$(_helper_get_ioc_info_json "$ioc_name")
+    ioc_info_json=$(which_ioc_json "$@")
     echo "$ioc_info_json"
 
     jq=$(_helper_find_jq)
@@ -127,25 +137,27 @@ ipython_debug_entrypoint() {
 }
 
 # hutchp_dir - go to the per-hutch hutch-python configuration directory.
-#   Usage: hutchp_dir (hutch_name)
+#   Usage: hutchp_dir [hutch_name]
 #   Example: hutchp_dir rix
 hutchp_dir() {
-    # shellcheck disable=SC2164
-    cd "/cds/group/pcds/pyps/apps/hutch-python/$1/"
+    hutch=$(_helper_maybe_get_hutch "$1")
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
+    cd "/cds/group/pcds/pyps/apps/hutch-python/$hutch/" || return
 }
 
 # hutchp_logs - go to the per-hutch hutch-python log directory.
 #   Usage: hutchp_logs (hutch_name)
 #   Example: hutchp_logs rix
 hutchp_logs() {
-    log_path="/cds/group/pcds/pyps/apps/hutch-python/$1/logs"
+    hutch=$(_helper_maybe_get_hutch "$1")
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
+    log_path="/cds/group/pcds/pyps/apps/hutch-python/${hutch}/logs"
     current_year=$(date -u +"%Y_")
     current_month=$(date -u +"%Y_%m")
     date_path="${log_path}/${current_month}"
     if [ -d "$date_path" ]; then
         echo "$date_path"
-        # shellcheck disable=SC2164
-        cd "$date_path"
+        cd "$date_path" || return
     else
         echo "$log_path"
         # shellcheck disable=SC2164
@@ -157,8 +169,18 @@ hutchp_logs() {
 #   Usage: hutch_config (hutch_name)
 #   Example: hutch_config rix
 hutch_config() {
+    hutch=$(_helper_maybe_get_hutch "$1")
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
     # shellcheck disable=SC2164
-    cd "/cds/group/pcds/config/$1/"
+    cd "/cds/group/pcds/config/$hutch/"
+}
+
+# helpme
+#   Usage: helpme
+#   Example: helpme
+helpme() {
+    # shellcheck disable=SC2154
+    less "$dotfiles/helpme.md"
 }
 
 # ****************
