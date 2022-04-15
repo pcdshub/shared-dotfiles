@@ -11,7 +11,7 @@ if [ -z "$_PCDS_CONDA_FOR_UTILS" ]; then
     _PCDS_CONDA_FOR_UTILS=/cds/group/pcds/pyps/conda/py39/envs/pcds-5.3.0/
 fi
 
-# ALL_IOCS_TEXT=/cds/data/iocData/.all_iocs/iocs.txt
+_ALL_IOCS_TEXT=/cds/data/iocData/.all_iocs/iocs.txt
 _ALL_IOCS_JSON=/cds/data/iocData/.all_iocs/iocs.json
 
 

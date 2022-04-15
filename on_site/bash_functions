@@ -41,22 +41,35 @@ ioclog() {
 }
 
 # Find a currently-deployed IOC with a bit more details:
-#  Usage: find_ioc (iocname)
-#  Example: find_ioc ioc-xpp-gige-las01
-#  Example: find_ioc ioc-xpp-.*-las01
+#  Usage: which_ioc [iocname]
+#  Example: which_ioc
+#  Example: which_ioc ioc-xpp-gige-las01
+#  Example: which_ioc ioc-xpp-.*-las01
 #  Full version is available in a table here:
 #       https://confluence.slac.stanford.edu/display/PCDS/EPICS+IOCs+Deployed+in+IOC+Manager
 #  Note: this is derived from "whatrecord iocmanager-loader" and is run on a
 #        personal cron job.
-grep_ioc() {
-    local ioc_name=$1
+which_ioc() {
+    local to_find=$1
     local fzf
     fzf=$(_helper_find_fzf)
     if [ -z "$fzf" ]; then
-        grep -i -e "$ioc_name" /cds/data/iocData/.all_iocs/iocs.txt
+        grep -i -e "$to_find" "$_ALL_IOCS_TEXT"
     else
-        $fzf +m -q "$ioc_name" < /cds/data/iocData/.all_iocs/iocs.txt
+        $fzf +m -q "$to_find" < "$_ALL_IOCS_TEXT"
     fi
+}
+
+# Find a currently-deployed IOC with a bit more details, in JSON:
+#  Usage: which_ioc_json [iocname]
+#  Example: which_ioc_json
+#  Example: which_ioc_json ioc-xpp-gige-las01
+#  Example: which_ioc_json ioc-xpp-.*-las01
+which_ioc_json() {
+    local to_find=$1
+    local ioc_name
+    ioc_name=$( which_ioc "$to_find" | cut -d "|" -f 2 | sed -e "s/\s*//g" )
+    _helper_get_ioc_info_json "$ioc_name"
 }
 
 # Go to an IOC data directory (with fuzzy searching).
@@ -73,13 +86,10 @@ iocdata() {
 #  Example: cdioc ioc-xcs
 #  For each example, user input is required to pick the IOC.
 cdioc() {
-    local ioc_name
     local ioc_path
     local ioc_startup
     local jq
-    ioc_name=$( grep_ioc "$@" | cut -d "|" -f 2 | sed -e "s/\s*//g" )
-    echo "IOC name: $ioc_name"
-    ioc_info_json=$(_helper_get_ioc_info_json "$ioc_name")
+    ioc_info_json=$(which_ioc_json "$@")
     echo "$ioc_info_json"
 
     jq=$(_helper_find_jq)
