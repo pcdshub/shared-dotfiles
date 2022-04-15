@@ -42,4 +42,7 @@
     st = status -s
 
 [pull]
-	ff = only
+    ff = only
+
+[svn]
+    authorsfile=/afs/slac/g/cd/swe/git/repos/package/epics/modules/authors.txt
