@@ -60,6 +60,15 @@ $ git clone git@github.com:your-user/shared-dotfiles dotfiles
 $ ln -s dotfiles/bashrc .bashrc
 ```
 
+## Post-installation
+
+### "On-site" configuration
+
+If you've installed or are working in a shared-dotfiles "trial mode", consider
+typing ``helpme`` to view the packaged [helpme.md](helpme.md) for a reminder
+on how to navigate directories, find IOCs, and recall what important
+directories there are.
+
 ## SSH configuration
 
 SSH configurations for on-site versus off-site usage exist.
