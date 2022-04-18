@@ -18,6 +18,9 @@ Some configuration is broken up into "on-site" versus "off-site" here.
 
 ### Trial run
 
+You can try parts of these settings without installing anything by doing the
+following:
+
 ```bash
 $ ssh psbuild-rhel7
 $ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
@@ -25,6 +28,9 @@ $ cd dotfiles
 $ ./try_me_onsite.sh
 # Then read the instructions in the script output.
 ```
+
+Please note that this only applies to the bash configuration and not the SSH,
+git, vim, and other provided configurations here.
 
 ### Out-of-the-box
 
