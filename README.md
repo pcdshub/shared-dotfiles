@@ -3,6 +3,17 @@
 Shared configuration useful for PCDS engineers: "dot" files such as bash
 configuration (.bashrc) and SSH configuration (.ssh/config).
 
+## On-site and off-site
+
+Some configuration is broken up into "on-site" versus "off-site" here.
+
+1. The off-site configuration is meant for your laptop or machine you use at home
+   to connect to the PCDS network by way of SSH, OpenVPN, or similar.
+   It works well on SLAC WiFi, too, so you don't need to switch back and forth.
+2. The on-site configuration is meant to be used on PCDS machines like pslogin
+   and psbuild-rhel7.  You have a shared home storage space on these machines,
+   so you will only need to install it once.
+
 ## How to use these
 
 ### Trial run
@@ -47,10 +58,5 @@ $ ln -s dotfiles/bashrc .bashrc
 
 SSH configurations for on-site versus off-site usage exist.
 
-1. The off-site configuration is meant for your laptop or machine you use at home
-   to connect to the PCDS network.
-   It works well on SLAC WiFi, too, so you don't need to switch back and forth.
-2. The on-site configuration is meant to be used on PCDS machines like pslogin
-   and psbuild-rhel7.  You have a shared home storage space on these machines,
-   so you will only need to install it once.
-   The ``use_dotfiles.sh`` script assumes an on-site configuration for now.
+The ``use_dotfiles.sh`` script assumes an on-site configuration for now,
+so it's recommended to run it on psbuild-rhel7 or similar.
