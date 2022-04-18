@@ -23,7 +23,7 @@ $ ssh psbuild-rhel7
 $ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
 $ cd dotfiles
 $ ./try_me_onsite.sh
-# And read the instructions
+# Then read the instructions in the script output.
 ```
 
 ### Out-of-the-box
