@@ -18,13 +18,19 @@ Some configuration is broken up into "on-site" versus "off-site" here.
 
 ### Trial run
 
+You can try parts of these settings without installing anything by doing the
+following:
+
 ```bash
 $ ssh psbuild-rhel7
 $ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
 $ cd dotfiles
 $ ./try_me_onsite.sh
-# And read the instructions
+# Then read the instructions in the script output.
 ```
+
+Please note that this only applies to the bash configuration and not the SSH,
+git, vim, and other provided configurations here.
 
 ### Out-of-the-box
 
@@ -53,6 +59,15 @@ $ cd   # <-- work in your home directory
 $ git clone git@github.com:your-user/shared-dotfiles dotfiles
 $ ln -s dotfiles/bashrc .bashrc
 ```
+
+## Post-installation
+
+### "On-site" configuration
+
+If you've installed or are working in a shared-dotfiles "trial mode", consider
+typing ``helpme`` to view the packaged [helpme.md](helpme.md) for a reminder
+on how to navigate directories, find IOCs, and recall what important
+directories there are.
 
 ## SSH configuration
 
