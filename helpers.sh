@@ -11,9 +11,25 @@ if [ -z "$_PCDS_CONDA_FOR_UTILS" ]; then
     _PCDS_CONDA_FOR_UTILS=/cds/group/pcds/pyps/conda/py39/envs/pcds-5.3.0/
 fi
 
+# shellcheck disable=SC2034
 _ALL_IOCS_TEXT=/cds/data/iocData/.all_iocs/iocs.txt
 _ALL_IOCS_JSON=/cds/data/iocData/.all_iocs/iocs.json
 
+# _helper_cd_verbose
+#  Change directory to the provided path and let the user know about it.
+#  Also adds the path to the user's history.
+#  	  Usage: pythonpathmunge (dirname)
+_helper_cd_verbose() {
+    new_path="$1"
+    if [ -z "$new_path" ]; then
+        return
+    fi
+    cd "$new_path" || return
+    history -s "cd \"$new_path\""
+    echo "Old directory: $OLDPWD"
+    echo "Working directory: $PWD"
+    echo "Tip: use 'cd -' to go back."
+}
 
 # _helper_pick_directory:
 #   Use a fuzzy finder to pick a directory underneath the provided path.
@@ -263,3 +279,4 @@ pythonpathmunge()
 	pathpurge "$to_add"
 	export PYTHONPATH=$to_add:$PYTHONPATH
 }
+
