@@ -184,7 +184,7 @@ $ cdioc iocname
 To get to an IOC data directory quickly:
 
 ```bash
-$ iocdata
+$ cdiocdata
 ```
 
 To list all IOCs:
@@ -203,9 +203,9 @@ $ which_ioc_json
 Navigating to hutch-python directories
 --------------------------------------
 
-* ``hutch_config`` hutch configuration directory
-* ``hutchp_dir`` hutch-python configuration directory
-* ``hutchp_logs`` hutch-python log directory
+* ``cdhutchconfig`` hutch configuration directory
+* ``cdhutchp`` hutch-python configuration directory
+* ``cdhutchp_logs`` hutch-python log directory
 
 
 Viewing logs

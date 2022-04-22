@@ -73,10 +73,10 @@ which_ioc_json() {
 }
 
 # Go to an IOC data directory (with fuzzy searching).
-#  Usage: iocdata [query]
-#  Example: iocdata
-#  Example: iocdata ioc-xcs
-iocdata() {
+#  Usage: cdiocdata [query]
+#  Example: cdiocdata
+#  Example: cdiocdata ioc-xcs
+cdiocdata() {
     _helper_cd_under /cds/data/iocData "$@"
 }
 
@@ -102,10 +102,7 @@ cdioc() {
     ioc_path=$(dirname "$ioc_startup")
 
     if [ -d "$ioc_path" ]; then
-        cd "$ioc_path" || return
-        history -s "cd \"$ioc_path\""
-        echo "Working directory: $PWD"
-        echo "Tip: use 'cd -' to go back."
+        _helper_cd_verbose "$ioc_path"
     else
         echo "$ioc_path does not exist"
     fi
@@ -136,28 +133,28 @@ ipython_debug_entrypoint() {
     fi
 }
 
-# hutchp_dir - go to the per-hutch hutch-python configuration directory.
-#   Usage: hutchp_dir [hutch_name]
-#   Example: hutchp_dir rix
-hutchp_dir() {
+# cdhutchp - go to the per-hutch hutch-python configuration directory.
+#   Usage: cdhutchp [hutch_name]
+#   Example: cdhutchp rix
+cdhutchp() {
     hutch=$(_helper_maybe_get_hutch "$1")
-    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
-    cd "/cds/group/pcds/pyps/apps/hutch-python/$hutch/" || return
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s). Please specify a hutch." && return
+    _helper_cd_verbose "/cds/group/pcds/pyps/apps/hutch-python/$hutch/"
 }
 
-# hutchp_logs - go to the per-hutch hutch-python log directory.
-#   Usage: hutchp_logs (hutch_name)
-#   Example: hutchp_logs rix
-hutchp_logs() {
+# cdhutchp_logs - go to the per-hutch hutch-python log directory.
+#   Usage: cdhutchp_logs (hutch_name)
+#   Example: cdhutchp_logs rix
+cdhutchp_logs() {
     hutch=$(_helper_maybe_get_hutch "$1")
-    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s). Please specify a hutch." && return
     log_path="/cds/group/pcds/pyps/apps/hutch-python/${hutch}/logs"
     current_year=$(date -u +"%Y_")
     current_month=$(date -u +"%Y_%m")
     date_path="${log_path}/${current_month}"
     if [ -d "$date_path" ]; then
         echo "$date_path"
-        cd "$date_path" || return
+        _helper_cd_verbose "$date_path"
     else
         echo "$log_path"
         # shellcheck disable=SC2164
@@ -165,14 +162,33 @@ hutchp_logs() {
     fi
 }
 
-# hutch_config - go to the per-hutch configuration directory.
-#   Usage: hutch_config (hutch_name)
-#   Example: hutch_config rix
-hutch_config() {
+# cdhutchconfig - go to the per-hutch configuration directory.
+#   Usage: cdhutchconfig (hutch_name)
+#   Example: cdhutchconfig rix
+cdhutchconfig() {
     hutch=$(_helper_maybe_get_hutch "$1")
-    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s)"; return;
-    # shellcheck disable=SC2164
-    cd "/cds/group/pcds/config/$hutch/"
+    [ "$hutch" == "unknown_hutch" ] && echo "Unknown hutch for $(hostname -s). Please specify a hutch." && return
+    _helper_cd_verbose "/cds/group/pcds/config/$hutch/"
+}
+
+# markdown_view - view GitHub-flavored markdown files in lynx
+#  Usage: markdown_view filename.md
+#  Example: markdown_view helpme.md
+markdown_view() {
+    markdown_file="$1"
+    if [ -z "$markdown_file" ]; then
+        echo "Usage: markdown_view filename.md"
+        return
+    fi
+
+    pandoc="$_PCDS_CONDA_FOR_UTILS/bin/pandoc"
+    lynx=$(command -v lynx 2>/dev/null)
+    if [ -x "$lynx" ]; then
+        echo "Opening $markdown_file with lynx..."
+        exec "${pandoc}" --from gfm --to html "$markdown_file" | "$lynx" -stdin
+    else
+        less "$markdown_file"
+    fi
 }
 
 # helpme
@@ -180,7 +196,7 @@ hutch_config() {
 #   Example: helpme
 helpme() {
     # shellcheck disable=SC2154
-    less "$dotfiles/helpme.md"
+    markdown_view "$dotfiles/helpme.md"
 }
 
 # ****************
