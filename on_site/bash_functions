@@ -175,12 +175,27 @@ hutch_config() {
     cd "/cds/group/pcds/config/$hutch/"
 }
 
+# markdown_view - view GitHub-flavored markdown files in lynx
+#  Usage: markdown_view filename.md
+#  Example: markdown_view helpme.md
+markdown_view() {
+    markdown_file="$1"
+    pandoc="$_PCDS_CONDA_FOR_UTILS/bin/pandoc"
+    lynx=$(command -v lynx 2>/dev/null)
+    if [ -x "$lynx" ]; then
+        echo "Opening $markdown_file with lynx..."
+        exec "${pandoc}" --from gfm --to html "$markdown_file" | "$lynx" -stdin
+    else
+        less "$markdown_file"
+    fi
+}
+
 # helpme
 #   Usage: helpme
 #   Example: helpme
 helpme() {
     # shellcheck disable=SC2154
-    less "$dotfiles/helpme.md"
+    markdown_view "$dotfiles/helpme.md"
 }
 
 # ****************
