@@ -42,4 +42,14 @@ For a reminder on what is provided with this package, take a look at
     $ helpme
 
 When done testing, type 'exit' to return to your usual bash prompt.
+
+This trial mode includes the following shared-dotfiles settings:
+    * On-site bash settings (bashrc, bash_functions, and bash_aliases)
+    * vim settings (vimrc)
+
+This trial mode DOES NOT automatically include the following shared-dotfiles settings:
+    * SSH configuration
+    * git configuration
+    * conda settings
+    * tmux settings
 "
