@@ -59,7 +59,7 @@ have before running them.
 * ``pydev_env`` Source this file to activate a development environment based on
   the latest shared environment and on past calls to pydev_register``.
 * ``pydev_register``  Use this script to register development packages so
-  that they will be available when you source pydev_env 
+  that they will be available when you source pydev_env
 * ``pyps-deploy`` Sets up a pyps/apps deployment for a particular github python
   package.
 * ``questionnaire_tools`` tools for interacting with the questionnaire.
@@ -69,9 +69,9 @@ have before running them.
 * ``stopami`` stop the AMI session.
 * ``stopdaq`` stop the DAQ.
 * ``takepeds`` takes a run with dark images for use in pedestals, and posts to
-  the elog. 
+  the elog.
 * ``wheredaq`` discover what host is running the daq in the current hutch, if
-  any. 
+  any.
 * ``wherepsana`` checks where we have shared memory servers for psana running
   and could run psana jobs.
 
@@ -128,6 +128,24 @@ Screens
    - netconfig
    - digiconfig
    - psipmi
+
+
+Other commands
+--------------
+
+There are a lot of commands available in your environment.
+
+To see a list of all of them and where they come from, type:
+
+```bash
+$ which_command
+```
+
+Consider piping that into fzf to find the command you are looking for:
+
+```bash
+$ which_command | fzf
+```
 
 Navigation
 ==========
@@ -231,7 +249,7 @@ Shared filesystems
 Python environments
 -------------------
 
-To access our deployed conda environments, see: 
+To access our deployed conda environments, see:
 https://confluence.slac.stanford.edu/display/PCDS/PCDS+Conda+Python+Environments
 
 Generally, you should only need to run the following on a machine like
@@ -248,7 +266,7 @@ Happi configuration
 -------------------
 
 HAPPI_CFG is set automatically in our Python environment scripts. We store that
-configuration in 
+configuration in
 
 ``/cds/group/pcds/pyps/apps/hutch-python/device_config``
 
@@ -260,7 +278,7 @@ Hutch-python configuration paths
 See [Hutch Python
 Seminar](https://confluence.slac.stanford.edu/display/PCDS/Hutch+Python+Seminar)
 for more details.  You must be added to the relevant instrument group
-(ps-<hutch>, e.g. ps-xpp) for write access to these files 
+(ps-<hutch>, e.g. ps-xpp) for write access to these files
 
 For a given hutch, e.g., `xpp`:
 

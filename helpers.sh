@@ -20,6 +20,7 @@ _ALL_IOCS_JSON=/cds/data/iocData/.all_iocs/iocs.json
 #  Also adds the path to the user's history.
 #  	  Usage: pythonpathmunge (dirname)
 _helper_cd_verbose() {
+    local new_path
     new_path="$1"
     if [ -z "$new_path" ]; then
         return
@@ -80,7 +81,7 @@ _helper_cd_under() {
 }
 
 
-# _helper_find_fzf
+# _helper_find_jq
 #   Find the JSON query tool, jq, if available.
 _helper_find_jq() {
     local jq

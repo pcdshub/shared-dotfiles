@@ -191,9 +191,26 @@ markdown_view() {
     fi
 }
 
+# which_command - show all commands and where they come from.
+#   Note that this can take a while to list everything.  Consider
+#   using it with grep or fzf to find what you're looking for.
+#  Usage: which_command
+#  Example: which_command | fzf
+which_command() {
+    local cmd
+    local location
+    for cmd in $(compgen -c | sort | uniq); do
+        location=$(which --skip-functions --skip-alias "$cmd" 2> /dev/null)
+        if [ -n "$location" ]; then
+            echo "$cmd ($location)"
+        else
+            echo "$cmd"
+        fi
+    done
+}
+
 # helpme
 #   Usage: helpme
-#   Example: helpme
 helpme() {
     # shellcheck disable=SC2154
     markdown_view "$dotfiles/helpme.md"

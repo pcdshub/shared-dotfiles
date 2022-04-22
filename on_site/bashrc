@@ -129,8 +129,10 @@ _FZF_SHARE_PATH="$_PCDS_CONDA_FOR_UTILS/share/fzf"
 _FZF_COMPLETIONS="$_FZF_SHARE_PATH/shell/completions.bash"
 _FZF_BINDINGS="$_FZF_SHARE_PATH/shell/key-bindings.bash"
 
-[ -f "$_FZF_COMPLETIONS" ] && source "$_FZF_COMPLETIONS";
-[ -f "$_FZF_BINDINGS" ] && source "$_FZF_BINDINGS";
+pathmunge "/cds/group/pcds/pyps/apps/fzf/bin/"
+
+[ -f "$_FZF_COMPLETIONS" ] && source "$_FZF_COMPLETIONS"
+[ -f "$_FZF_BINDINGS" ] && source "$_FZF_BINDINGS"
 
 
 # **********************
@@ -275,6 +277,11 @@ PROMPT_DIRTRIM=2
 # E.g. typing !!<space> will replace the !! with your last command
 bind Space:magic-space
 
+# Disable ctrl-s/ctrl-q - these can cause real confusion.
+stty stop ''
+stty start ''
+stty -ixon
+stty -ixoff
 
 # ***************
 # ** Now what? **
