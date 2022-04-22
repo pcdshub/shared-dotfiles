@@ -180,6 +180,11 @@ hutch_config() {
 #  Example: markdown_view helpme.md
 markdown_view() {
     markdown_file="$1"
+    if [ -z "$markdown_file" ]; then
+        echo "Usage: markdown_view filename.md"
+        return
+    fi
+
     pandoc="$_PCDS_CONDA_FOR_UTILS/bin/pandoc"
     lynx=$(command -v lynx 2>/dev/null)
     if [ -x "$lynx" ]; then
