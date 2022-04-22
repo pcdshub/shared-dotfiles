@@ -25,19 +25,46 @@ following:
 $ ssh psbuild-rhel7
 $ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
 $ cd dotfiles
-$ ./try_me_onsite.sh
+$ ./try_me.sh
 # Then read the instructions in the script output.
 ```
 
-Please note that this only applies to the bash configuration and not the SSH,
-git, vim, and other provided configurations here.
+Please note that this only applies to the bash and vim configuration and not
+the SSH, git, and other provided configurations here.
 
 ### Out-of-the-box
+
+#### Sourcing method
+
+The easiest method to getting just the bash configuration can be to source
+it from your existing "~/.bashrc" script.
+
+Perform the following:
+
+```bash
+$ ssh psbuild-rhel7
+$ cd
+# In your home directory, clone the dotfiles:
+$ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
+```
+
+And then add this line to your bashrc to include the on-site bashrc
+configuration:
+
+```bash
+$ echo 'source $HOME/dotfiles/on_site/bash_all.sh' >> $HOME/.bashrc
+```
+
+#### Installation method
+
+A more permanent solution could be to use just these dotfiles.
 
 To link the scripts here and use them every time when you login:
 
 ```bash
 $ ssh psbuild-rhel7
+$ cd
+# In your home directory, clone the dotfiles:
 $ git clone git@github.com:pcdshub/shared-dotfiles dotfiles
 $ cd dotfiles
 $ bash use_dotfiles.sh
