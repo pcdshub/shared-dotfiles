@@ -88,7 +88,6 @@ one. We recommend that you version control your dotfiles.
    $ ssh psbuild-rhel7
    $ cd   # <-- work in your home directory
    $ git clone git@github.com:your-user/shared-dotfiles dotfiles
-   $ ln -s dotfiles/bashrc .bashrc
    ```
 3. Either use the sourcing method above or refer to ``.bashrc`` directly:
    ```bash
