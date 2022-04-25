@@ -4,9 +4,9 @@ Help
 This file may not be the most up-to-date.  Check the following for up-to-date
 information.
 
-[Environment info](https://confluence.slac.stanford.edu/display/PCDS/How+to+access+PCDS+environments)
-[shared-dotfiles](https://github.com/pcdshub/shared-dotfiles)
-[engineering_tools](https://github.com/pcdshub/engineering_tools/blob/master/README.md)
+* [Confluence environment](https://confluence.slac.stanford.edu/display/PCDS/How+to+access+PCDS+environments) information
+* [shared-dotfiles](https://github.com/pcdshub/shared-dotfiles) repository
+* [Engineering tools](https://github.com/pcdshub/engineering_tools/blob/master/README.md) README
 
 To view this document while using the dotfiles, type ``helpme``.
 
