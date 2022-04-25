@@ -24,6 +24,9 @@ features:
     * Type to filter the items in your directory.
     * Find the file/directory you're looking for? Press enter to insert it in the command line.
     * To cancel, hit ``Ctrl-c``.
+
+The rest are common readline key mappings that I find useful:
+
 * ``Ctrl-a`` - press this to go to the beginning of your input while typing in bash.
 * ``Ctrl-e`` - press this to go to the end of your input while typing in bash.
 * ``Ctrl-l`` - press this to clear your screen quickly.
