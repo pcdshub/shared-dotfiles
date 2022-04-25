@@ -4,11 +4,52 @@ Help
 This file may not be the most up-to-date.  Check the following for up-to-date
 information.
 
-https://confluence.slac.stanford.edu/display/PCDS/How+to+access+PCDS+environments
-https://github.com/pcdshub/shared-dotfiles
-https://github.com/pcdshub/engineering_tools/blob/master/README.md
+[Environment info](https://confluence.slac.stanford.edu/display/PCDS/How+to+access+PCDS+environments)
+[shared-dotfiles](https://github.com/pcdshub/shared-dotfiles)
+[engineering_tools](https://github.com/pcdshub/engineering_tools/blob/master/README.md)
 
 To view this document while using the dotfiles, type ``helpme``.
+
+Key bindings
+============
+
+``fzf`` support is enabled by default. Use the following key combinations to use the fuzzy-finding
+features:
+
+* ``Ctrl-r`` - press this to fuzzily search through your bash history.
+    * Type to filter items in your history.
+    * Find the item you're looking for? Press enter to put it in your command-line.
+    * To cancel, hit ``Ctrl-c``.
+* ``Ctrl-t`` - press this to fuzzily search through files in your current directory.
+    * Type to filter the items in your directory.
+    * Find the file/directory you're looking for? Press enter to insert it in the command line.
+    * To cancel, hit ``Ctrl-c``.
+* ``Ctrl-a`` - press this to go to the beginning of your input while typing in bash.
+* ``Ctrl-e`` - press this to go to the end of your input while typing in bash.
+* ``Ctrl-l`` - press this to clear your screen quickly.
+* ``Ctrl-c`` - press this to stop your current process.
+* ``Ctrl-z`` - press this to pause your current process.
+    * Use ``bg`` to let it run in the background.
+    * Use ``fg`` to bring it back to the foreground.
+    * Type ``jobs`` to see what's been backgrounded or paused.
+* ``Ctrl-u`` to cut everything up to your cursor.
+    * ``Ctrl-y`` to paste it back.
+* ``Ctrl-w`` to cut the previous word(s).
+    * ``Ctrl-y`` to paste it/them back.
+
+
+tmux
+----
+
+* ``Ctrl-q`` is used as the default prefix.
+* See [tmux.conf](tmux.conf) for further bindings for working with panels.
+
+
+vim
+---
+
+* Ex mode is disabled by default, rebinding ``Q`` to ``gq`` (reformat).
+* Otherwise, no specific bindings are added to the default vim configuration.
 
 Tools
 =====
@@ -119,15 +160,15 @@ Screens
 
 /reg/common/tools/bin contains scripts such as:
 * Tools for inspecting or interacting with released EPICS modules:
-   - epics-checkout
-   - epics-release
-   - epics-versions (and other eco_tools)
-   - svnIocToGit
-   - svnModuleToGit
+   - ``epics-checkout``
+   - ``epics-release``
+   - ``epics-versions`` (and other eco_tools)
+   - ``svnIocToGit``
+   - ``svnModuleToGit``
 * Tools for inspecting or modifying networking configuration:
-   - netconfig
-   - digiconfig
-   - psipmi
+   - ``netconfig``
+   - ``digiconfig``
+   - ``psipmi``
 
 
 Other commands
