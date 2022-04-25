@@ -85,16 +85,16 @@ one. We recommend that you version control your dotfiles.
 
 1. Fork pcdshub/shared-dotfiles to your-user/shared-dotfiles
 2. ```bash
-$ ssh psbuild-rhel7
-$ cd   # <-- work in your home directory
-$ git clone git@github.com:your-user/shared-dotfiles dotfiles
-$ ln -s dotfiles/bashrc .bashrc
-```
+   $ ssh psbuild-rhel7
+   $ cd   # <-- work in your home directory
+   $ git clone git@github.com:your-user/shared-dotfiles dotfiles
+   $ ln -s dotfiles/bashrc .bashrc
+   ```
 3. Either use the sourcing method above or refer to ``.bashrc`` directly:
-```bash
-# Use the dotfiles bashrc as your .bashrc
-$ ln -s dotfiles/bashrc .bashrc
-```
+   ```bash
+   # Use the dotfiles bashrc as your .bashrc
+   $ ln -s dotfiles/bashrc .bashrc
+   ```
 
 Keeping up-to-date with upstream changes will be your responsibility.  You
 may need to rebase or merge with shared-dotfiles as your configuration
@@ -105,7 +105,11 @@ gets customized.
 These dotfiles can be used as your entire configuration, if you are not picky
 about customizations.
 
-To link the scripts here and use them every time when you login:
+Note that this method includes *all* customizations provided here: from
+the bash scripts to vim configuration, and the rest.
+
+To link the scripts and configuration files provided and use them every time
+when you login:
 
 ```bash
 $ ssh psbuild-rhel7
