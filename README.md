@@ -45,6 +45,26 @@ Some configuration is broken up into "on-site" versus "off-site" here.
    and psbuild-rhel7.  You have a shared home storage space on these machines,
    so you will only need to install it once.
 
+### Use case: macOS/Linux machine at home/on-site
+
+The off-site configuration is tailored for your use case.
+
+See [here](https://confluence.slac.stanford.edu/pages/viewpage.action?pageId=320479134) for
+full setup instructions.
+
+* Suggested use for your machine: off-site SSH configuration, and configuration files of your choice
+* Suggested use for PCDS machines: on-site configuration installed on, for example, ``psbuild-rhel7``.
+
+
+### Use case: Windows machine at home/on-site
+
+Whether you use Windows at home or on-site, you should consider using our pre-configured
+[MobaXterm](https://confluence.slac.stanford.edu/display/PCDS/Windows%3A+How+to+install+and+use+MobaXterm+to+access+PCDS+machines+and+software)
+distribution.
+
+* Suggested use for your machine: You will not need to use the provided off-site configuration here.
+* Suggested use for PCDS machines: on-site configuration installed on, for example, ``psbuild-rhel7``.
+
 ## How to use these
 
 ### Trial run
