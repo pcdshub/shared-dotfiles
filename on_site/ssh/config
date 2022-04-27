@@ -20,5 +20,4 @@ Host *
     ForwardAgent yes
     ForwardX11 yes
     ForwardX11Trusted yes
-    XAuthLocation /opt/X11/bin/xauth
-    PreferredAuthentications=publickey,password
+    PreferredAuthentications=gssapi,publickey,password
