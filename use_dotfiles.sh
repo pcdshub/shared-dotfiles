@@ -74,3 +74,4 @@ link_file dotfiles/vimrc .vimrc
 
 mkdir -p .ssh
 copy_file "dotfiles/${on_or_off}_site/ssh/config" .ssh/config
+chmod 0600 ~/.ssh/config
