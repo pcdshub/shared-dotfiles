@@ -5,9 +5,11 @@
 #
 # This could be called an "on-site" configuration.
 
+Match host github.com exec "hostname | grep -v psbuild"
+    ProxyJump psproxy.pcdsn
+
 Host github.com
     HostName github.com
-    ProxyJump psproxy.pcdsn
     User git
     ForwardAgent no
     ForwardX11 no
