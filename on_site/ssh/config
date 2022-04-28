@@ -5,7 +5,7 @@
 #
 # This could be called an "on-site" configuration.
 
-Match host github.com exec "hostname | grep -v psbuild"
+Match host github.com exec "echo ${http_proxy} | grep psproxy"
     ProxyJump psproxy.pcdsn
 
 Host github.com
