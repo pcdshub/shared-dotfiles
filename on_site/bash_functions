@@ -47,9 +47,7 @@ git_setup_fork() {
   REPO=`basename "${1}"`
   UPSTREAM=`dirname "${1}"`
   git clone --origin "${GITHUB_ORIGIN:-origin}" "git@github.com:${GITHUB_USERNAME:-${USER}}/${REPO}.git"
-  pushd "${REPO}"
-  git remote add "${GITHUB_UPSTREAM:-upstream}" "git@github.com:${UPSTREAM}/${REPO}.git"
-  popd
+  git -C "${REPO}" remote add "${GITHUB_UPSTREAM:-upstream}" "git@github.com:${UPSTREAM}/${REPO}.git"
 }
 
 # git_sync_upstream: pull changes from upstream master, push to your master
