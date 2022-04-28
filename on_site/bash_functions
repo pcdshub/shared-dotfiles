@@ -228,14 +228,22 @@ pick_host() {
 #  Example: which_host_json lfe
 which_host_json() {
     local host
+    local jq
     local to_find=$1
+
+    jq=$(_helper_find_jq)
+
+    if [ -z "$jq" ]; then
+        echo "Sorry, jq not found" 2>/dev/stderr
+        return;
+    fi
 
     host=$(pick_host "$to_find")
     if [ -z "$host" ]; then
         return;
     fi
 
-    _helper_get_host_info_json "$host" | jq ".[0]"
+    _helper_get_host_info_json "$host" | $jq ".[0]"
 }
 
 # helpme

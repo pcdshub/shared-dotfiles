@@ -184,15 +184,13 @@ _helper_get_host_info_table() {
     fi
 
     if [ $# -eq 0 ]; then
-        columns=( "name" "description" )
+        columns=( "name" "description" "ipHostNumber" )
     else
         columns=( "$@" )
     fi
 
-
     "${_PCDS_CONDA_FOR_UTILS}/bin/python" "$dotfiles/json_to_table.py" \
-        "${columns[@]}" \
-        < <(echo "$host_md")
+        "${columns[@]}" < <(echo "$host_md")
 
 }
 
