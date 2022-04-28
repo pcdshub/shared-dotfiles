@@ -289,7 +289,7 @@ stty -ixoff
 # ***********************
 
 # For git_setup_fork and git_sync_upstream
-export GITHUB_USERNAME="ZLLentz"
+export GITHUB_USERNAME="${USER}"
 export GITHUB_UPSTREAM="upstream"
 export GITHUB_ORIGIN="origin"
 export GITHUB_MASTER="master"
