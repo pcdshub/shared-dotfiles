@@ -26,6 +26,45 @@ sshcd() {
     ";
 }
 
+# ***********
+# **  GIT  **
+# ***********
+
+# git_setup_fork: clone your fork, add the upstream repo as a remote
+#   Usage:   get_setup_fork org/repo
+#   Example: git_setup_fork pcdshub/pcdsdevices
+#
+# Configure the defaults with the following env variables:
+#   - GITHUB_USERNAME
+#   - GITHUB_UPSTREAM
+#   - GITHUB_ORIGIN
+git_setup_fork() {
+  usage="git_setup_fork org/repo"
+  if [ -z "${1}" ]; then
+    echo "${usage}"
+    return
+  fi
+  REPO=`basename "${1}"`
+  UPSTREAM=`dirname "${1}"`
+  git clone --origin "${GITHUB_ORIGIN:-origin}" "git@github.com:${GITHUB_USERNAME:-${USER}}/${REPO}.git"
+  git -C "${REPO}" remote add "${GITHUB_UPSTREAM:-upstream}" "git@github.com:${UPSTREAM}/${REPO}.git"
+}
+
+# git_sync_upstream: pull changes from upstream master, push to your master
+#   Usage: git_sync_upstream
+#
+# Configure the defaults with the following env variables:
+#   - GITHUB_UPSTREAM
+#   - GITHUB_ORIGIN
+#   - GITHUB_MASTER
+git_sync_upstream() {
+  git checkout "${GITHUB_MASTER:-master}"
+  git fetch "${GITHUB_UPSTREAM:-upstream}"
+  git pull "${GITHUB_UPSTREAM:-upstream}" "${GITHUB_MASTER:-master}"
+  git push "${GITHUB_ORIGIN:-origin}" "${GITHUB_MASTER:-master}"
+}
+
+
 # **********
 # ** IOCs **
 # **********

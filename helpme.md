@@ -361,6 +361,39 @@ and available in: `/reg/g/pcds/engineering_tools/latest/`
 
 shared-dotfiles includes engineering tools in your PATH by default.
 
+GitHub
+======
+Most of our git repositories are on github. You can browse these at
+"[pcdshub](https://github.com/pcdshub)".
+
+Typically these repositories follow a "fork" and "pull request" model for
+development. You can read about this in our
+"[local](https://pcdshub.github.io/development.html)" documentation and on
+"[github](https://docs.github.com/en/get-started/quickstart/hello-world)" itself.
+
+The shared dotfiles contains some helper scripts for keeping your github forks
+in sync with the pcdshub upstream:
+
+- git_setup_fork: clones your fork and adds a reference to upstream
+- git_sync_upstream: pulls from upstream, pushes to your fork
+
+To make sure this works to your preferences, you should update the "GITHUB_"
+variables from the starter .bashrc. Here are the defaults and what they do:
+
+| Variable        | Default   | Description                                            |
+|-----------------|-----------|--------------------------------------------------------|
+| GITHUB_USERNAME | "${USER}" | Your login name for github, used to locate your forks. |
+| GITHUB_UPSTREAM | upstream  | The remote name to use for the main/canonical remote.  |
+| GITHUB_ORIGIN   | origin    | The remote name to use for your fork.                  |
+| GITHUB_MASTER   | master    | The branch name of the organization's main branch.     |
+
+The most common variable to edit is "GITHUB_USERNAME", which often differs from your
+SLAC unix username. "GITHUB_UPSTREAM" and "GITHUB_ORIGIN" are user preference- some people
+prefer "origin" to point to their fork, while others prefer "origin" to point to the
+original repository. "GITHUB_MASTER" should be "master" until we decide to rename all
+of our "master" branches to "main" as per latest practices.
+
+
 Git
 ===
 
