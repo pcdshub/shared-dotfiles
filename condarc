@@ -2,5 +2,6 @@ show_channel_urls: true
 
 channels:
 - conda-forge
+- pcds-tag
 
 channel_priority: strict
