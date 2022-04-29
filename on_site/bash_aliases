@@ -80,6 +80,8 @@ hpy3() {
 # This allows for aliases to be passed through to sudo
 alias sudo='sudo '
 
+# Alias view so vimrc is properly read
+alias view='vim -R'
 
 # ************
 # ** EPICS  **
