@@ -248,6 +248,43 @@ which_command() {
     done
 }
 
+# pick_host - search through LDAP/netconfig database to select a host
+#  Usage: pick_host [filter text]
+#  Example: pick_host lfe
+pick_host() {
+    local to_find=$1
+    local fzf
+    fzf=$(_helper_find_fzf)
+    if [ -z "$fzf" ]; then
+        echo "Sorry, fzf not found" 2>/dev/stderr
+        return;
+    fi
+    _helper_get_host_info_table | $fzf +m -q "$to_find" | cut -d "|" -f 2 | sed -e "s/\s*//g"
+}
+
+# which_host_json - search through LDAP/netconfig database for information
+#  Usage: which_host_json [filter text]
+#  Example: which_host_json lfe
+which_host_json() {
+    local host
+    local jq
+    local to_find=$1
+
+    jq=$(_helper_find_jq)
+
+    if [ -z "$jq" ]; then
+        echo "Sorry, jq not found" 2>/dev/stderr
+        return;
+    fi
+
+    host=$(pick_host "$to_find")
+    if [ -z "$host" ]; then
+        return;
+    fi
+
+    _helper_get_host_info_json "$host" | $jq ".[0]"
+}
+
 # helpme
 #   Usage: helpme
 helpme() {

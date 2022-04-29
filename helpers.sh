@@ -132,6 +132,67 @@ _helper_get_ioc_info_json() {
     fi
 }
 
+# _helper_get_hosts_json
+#   Get JSON information about one or all hosts in LDAP (same source as netconfig)
+#   Usage: _helper_get_host_info_json [hostname]
+#   Example: _helper_get_host_info_json
+#   Example: _helper_get_host_info_json zygo01
+_helper_get_host_info_json() {
+    local jq
+    local hostname
+    local all_host_metadata
+
+    jq=$(_helper_find_jq)
+    if [ ! -x "$jq" ]; then
+        echo "Sorry, jq is unavailable" 2>/dev/stderr
+        return
+    fi
+
+    hostname=$1
+
+    # shellcheck disable=SC2016
+    all_host_metadata=$(
+        ${_PCDS_CONDA_FOR_UTILS}/bin/python -m whatrecord.plugins.netconfig |
+        $jq '.metadata | [ to_entries[] | .key as $name | .value  + { "name": $name } ]'
+    )
+
+    if [ -z "$all_host_metadata" ]; then
+        echo "Sorry, something went wrong with whatrecord's netconfig plugin" 2>/dev/stderr
+        return
+    fi
+
+    if [ -z "$hostname" ]; then
+        # All hosts
+        echo "$all_host_metadata"
+    else
+        echo "$all_host_metadata" | $jq 'map(select(.name=='"\"$hostname\""'))'
+    fi
+}
+
+
+# _helper_get_hosts_table
+#   Get table for all hosts in LDAP (same source as netconfig)
+#   Usage: _helper_get_host_info_table [columns]
+#   Example: _helper_get_host_info_table name description
+_helper_get_host_info_table() {
+    local host_md
+    local -a columns
+    host_md=$(_helper_get_host_info_json "")
+
+    if [[ -z "$host_md" || -z "$dotfiles" ]]; then
+        return
+    fi
+
+    if [ $# -eq 0 ]; then
+        columns=( "name" "description" "ipHostNumber" )
+    else
+        columns=( "$@" )
+    fi
+
+    "${_PCDS_CONDA_FOR_UTILS}/bin/python" "$dotfiles/json_to_table.py" \
+        "${columns[@]}" < <(echo "$host_md")
+
+}
 
 # _helper_remove_from_list
 #   Remove an item from a list *and* deduplicate the list.

@@ -277,6 +277,46 @@ Viewing logs
 $ ioclog iocname
 ```
 
+Netconfig
+=========
+
+Searching for netconfig information about a host, IP address, etc.:
+
+```bash
+$ netconfig search text
+```
+
+Adding a new host:
+
+```bash
+$ netconfig add
+```
+
+Other information is available with ``netconfig --help``.
+
+Built-in fuzzy-finding helpers are also available.  To pick just a hostname
+for usage with another command, try:
+
+```bash
+$ pick_host
+```
+
+Or to get host information in JSON:
+
+```bash
+$ which_host_json
+```
+
+``jq`` can be used to get IP address information and more:
+
+```bash
+$ which_host_json | jq ".ipHostNumber"
+[
+  "172.21.48.34"
+]
+```
+
+
 Shared filesystems
 ==================
 
