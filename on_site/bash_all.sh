@@ -8,7 +8,8 @@ fi
 
 if [ ! -f "$ON_SITE/bashrc" ]; then
     echo "Unable to find the dotfiles script directory. Check your installation." >/dev/stderr
-else
+elif [[ "$-" =~ i ]]; then
+    # Source all scripts when using an interactive login shell
     source "$ON_SITE/bashrc"
     source "$ON_SITE/bash_functions"
     source "$ON_SITE/bash_aliases"
