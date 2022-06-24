@@ -14,7 +14,7 @@ if [ -z "$dotfiles" ]; then
 fi
 
 # The following sets up your prompt to show at least the host
-export PS1='\[\e[0;31m\][\u@\h  \W]\$\[\e[m\] '
+export PS1='\[\e[0;31m\] {AFS:$(_helper_afs_token_valid 2>/dev/null)} [\u@\h  \W]\$\[\e[m\] '
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
 
 # Your default editor will be set to vim.

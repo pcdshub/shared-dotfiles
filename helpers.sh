@@ -246,6 +246,22 @@ _helper_readlink() {
 }
 
 
+# _helper_check_afs_token
+#   Check if you have a valid AFS token.
+#   Usage: _helper_check_afs_token
+_helper_check_afs_token() {
+    klist | grep -e "afs/" &>/dev/null
+}
+
+
+# _helper_check_afs_token
+#   Check if you have a valid AFS token.
+#   Usage: _helper_check_afs_token
+_helper_afs_token_valid() {
+    (_helper_check_afs_token && echo "OK") || echo "Run aklog!"
+}
+
+
 # pathpurge
 #  Remove a path from ${PATH}
 #  	  Usage: pathpurge (dirname) [dirname ...]
