@@ -26,6 +26,18 @@ Host pslogin-arch
 # in use, generally.
 Host psbuild
     HostName psbuild-rhel7-01
+    # Let's dig into this syntax a bit (See `man ssh_config` for more details).
+    # This destination host is aliased as psbuild, with an actual hostname of
+    # psbuild-rhel7-01.
+    #
+    # The next line, ProxyJump, specifies that:
+    # * We "jump" (or go through) a host to reach the specified host here 
+    # * %r indicates we use the remote username as specified on the
+    #   command-line - or as User here - and not our local $USER
+    # * The ${PS_JUMP_HOST} means we use that environment variable to specify
+    #   which host to jump through.
+    # * The ${PS_JUMP_HOST=...} syntax provides a default host to jump through,
+    #   which we set to "pslogin" here.
     ProxyJump %r@${PS_JUMP_HOST=pslogin}
 
 Host psbuild-rhel7
@@ -34,12 +46,12 @@ Host psbuild-rhel7
 
 Host psdev
     HostName psdev
-    ProxyJump %r@pslogin
+    ProxyJump %r@${PS_JUMP_HOST=pslogin}
 
 # plcprog-console access
 Host psbuild-plc
     HostName psbuild-rhel7
-    ProxyJump %r@pslogin
+    ProxyJump %r@${PS_JUMP_HOST=pslogin}
     ExitOnForwardFailure yes
     ForwardAgent no
     LocalForward localhost:3389 plcprog-console:3389
@@ -49,7 +61,7 @@ Host psbuild-plc
 
 Host psbuild-socks
     HostName psbuild-rhel7
-    ProxyJump %r@pslogin
+    ProxyJump %r@${PS_JUMP_HOST=pslogin}
     ForwardAgent no
     DynamicForward localhost:8080
     ExitOnForwardFailure yes
@@ -65,7 +77,7 @@ Host psbuild-socks
 
 # pscron - used for scheduling cron job tasks
 Host pscron
-    ProxyJump %r@pslogin
+    ProxyJump %r@${PS_JUMP_HOST=pslogin}
 
 # Additional hosts from netconfig, hopping through psbuild-rhel7:
 # To rebuild or customize this list, use the following:
