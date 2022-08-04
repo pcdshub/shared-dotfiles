@@ -3,6 +3,10 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# Here's a basic setting for where we store additional bash-related
+# configuration files:
+export XDG_BASH_DIR="$HOME/.config/bash"
+
 # *******************************
 # ** Prompt and basic settings **
 # *******************************
@@ -24,6 +28,18 @@ export EDITOR=vim
 
 # Tell "grep" to use color, when possible
 export GREP_OPTIONS="--color=auto"
+
+export BASHRC_ALL_HOSTS_PRE="${XDG_BASH_DIR}/pre-bashrc.sh"
+
+# Source the "all hosts" login script pre-bashrc.  This defaults to:
+# $HOME/.config/bash/pre-bashrc.sh
+if [ -f "$BASHRC_ALL_HOSTS_PRE" ]; then
+    source "$BASHRC_ALL_HOSTS_PRE"
+fi
+
+# ***************************
+# ** Aliases and functions **
+# ***************************
 
 # If you have aliases and functions defined, let's use them:
 [ -f "$HOME/.bash_aliases" ] && source "$HOME/.bash_aliases"
@@ -294,6 +310,32 @@ export GITHUB_UPSTREAM="upstream"
 export GITHUB_ORIGIN="origin"
 export GITHUB_MASTER="master"
 
+
+# ****************************************
+# ** Customizations / Per-host settings **
+# ****************************************
+
+# If you don't want to maintain your own .bashrc but want some ability to
+# customize your settings, you may use the following files in place of (or in
+# addition to) .bashrc.
+
+THIS_HOST=$(hostname -s 2> /dev/null)
+export BASHRC_ALL_HOSTS_POST="${XDG_BASH_DIR}/post-bashrc.sh"
+
+# Source the "all hosts" login script post-bashrc.  This defaults to:
+# $HOME/.config/bash/post-bashrc.sh
+if [ -f "$BASHRC_ALL_HOSTS_POST" ]; then
+    source "$BASHRC_ALL_HOSTS_POST"
+fi
+
+# Source the per-host login script.  For example on psbuild:
+# $HOME/.config/bash/psbuild-rhel7-01.sh
+if [ -n "${THIS_HOST}" ]; then
+    export BASHRC_THIS_HOST="${XDG_BASH_DIR}/${THIS_HOST}.sh"
+    if [ -f "$BASHRC_THIS_HOST" ]; then
+        source "$BASHRC_THIS_HOST"
+    fi
+fi
 
 # ***************
 # ** Now what? **
