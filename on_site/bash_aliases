@@ -11,7 +11,7 @@ alias ls='ls --color'
 alias l='ls'
 
 # "ll" is short for detailed file lists, with "ls -l":
-alias ll='ls -al'
+alias ll='ls -lh'
 
 # "lh" is short for detailed file lists with human-readable units:
 alias lh='ls -Alh'
@@ -48,6 +48,11 @@ alias cdnewest='cd `ls -td --color=never */ | head -1`'
 #   This shortcut ``psb`` will allow you to quickly go to that host while
 #   retaining your current working directory.
 alias psb='sshcd psbuild-rhel7'
+alias psb5='sshcd psbuild-rhel5'
+alias psd='sshcd psdev'
+alias xppc='ssh -X xppopr@xpp-control'
+alias xppd='ssh -X xppopr@xpp-daq'
+alias mfxd='ssh -X mfxopr@mfx-daq'
 
 # *****************************
 # ** Python and hutch-python **
@@ -62,6 +67,19 @@ alias xcs3="hpy3 xcs"
 alias mfx3="hpy3 mfx"
 alias cxi3="hpy3 cxi"
 alias mec3="hpy3 mec"
+
+# Dir shrortcuts
+alias anad='cd /cds/data/psdm/'
+alias ffbd='cd /cds/data/drpsrcf/'
+alias hpyd='cd /cds/group/pcds/pyps/apps/hutch-python/'
+alias mydev='cd /cds/group/pcds/epics-dev/espov'
+alias epd='cd /cds/group/pcds/epics/'
+alias daqd='cd /cds/group/pcds/dist/pds'
+alias daqlogs='/cds/group/pcds/pds/'
+alias screens='cd /cds/group/pcds/epics-dev/screens/'
+alias epicsd='cd /cds/group/pcds/epics/ioc/'
+alias smd_release='cd /cds/group/psdm/sw/tools/smalldata_tools'
+
 
 # Python 3 hutch python shortcuts
 # hpy3
@@ -100,3 +118,18 @@ alias cagetstring='caget -S'
 # The tool shellcheck is available in our pcds Python environment.
 #
 # For bash help, see https://tldp.org/LDP/Bash-Beginners-Guide/html/
+
+# file alias
+alias xppcnf='vim /cds/group/pcds/dist/pds/xpp/scripts/xpp.cnf'
+alias mfxcnf='vim /cds/group/pcds/dist/pds/mfx/scripts/mfx.cnf'
+
+# plg prog rdesktop
+alias plcprog='rdesktop -g 1920x1200 -u ${USER} plcprog-console'
+alias plcprog4k='rdesktop -g 3600x2000 -u ${USER} plcprog-console'
+
+# Env aliases
+alias pcdsconda='source pcds_conda'
+alias anaenvpy2='source /reg/g/psdm/etc/psconda.sh'
+alias anaenv='source /reg/g/psdm/etc/psconda.sh -py3'
+alias xppenv='source /cds/group/pcds/pyps/apps/hutch-python/xpp/xppenv'
+

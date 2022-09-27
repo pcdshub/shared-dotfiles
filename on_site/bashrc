@@ -14,7 +14,7 @@ if [ -z "$dotfiles" ]; then
 fi
 
 # The following sets up your prompt to show at least the host
-export PS1='\[\e[0;31m\][\u@\h  \W]\$\[\e[m\] '
+export PS1='\[\e[0;32m\][\u@\h  \W]\$\[\e[m\] '
 export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
 
 # Your default editor will be set to vim.
@@ -82,6 +82,18 @@ source /cds/group/pcds/setup/epicsenv-cur.sh
 #   u=rwx,g=rwx,o=rx
 # Or read-write-execute for you and your group, and just read-execute for all
 # others.
+
+if [ $(echo $HOSTNAME | grep -ic -e "psana" -e "mon0" -e "drp-srcf") -eq 1 ]
+then
+    source /reg/g/psdm/etc/psconda.sh -py3 &> /dev/null
+elif [ $(echo $HOSTNAME | grep -ic -e "xpp") -eq 1 ]
+then
+    export PATH=$PATH:/cds/home/opr/xppopr/bin
+elif [ $(echo $HOSTNAME | grep -ic -e "mfx") -eq 1 ]
+then
+    export PATH=$PATH:/cds/home/opr/mfxopr/bin
+fi
+
 
 # ********************
 # ** Tab completion **

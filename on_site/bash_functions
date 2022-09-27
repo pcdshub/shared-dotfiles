@@ -301,3 +301,9 @@ helpme() {
 # The tool shellcheck is available in our pcds Python environment.
 #
 # For bash help, see https://tldp.org/LDP/Bash-Beginners-Guide/html/
+
+function pvgrep()
+{
+grep $1 /reg/d/iocData/*/iocInfo/IOC.pvlist
+}
+

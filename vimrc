@@ -28,7 +28,7 @@ set ignorecase smartcase               " case-insensitive (ic) search by default
                                        " except: if you search for AStringLikeThis, it will be case sensitive
 set imdisable                          " Disable the IME (gvim and unicode don't play well on different locale)
 set incsearch                          " do incremental searching
-set mouse+=a                           " enable mouse mode (terminal dependent)
+" set mouse+=a                           " enable mouse mode (terminal dependent) commented: messes with copy in mobaXterm
 set nobackup                           " disable writing .bak
 set novb                               " ** visual bell, no beeping! **
 set number                             " line numbering
