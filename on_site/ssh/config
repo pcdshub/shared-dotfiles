@@ -22,4 +22,4 @@ Host *
     ForwardAgent yes
     ForwardX11 yes
     ForwardX11Trusted yes
-    PreferredAuthentications=gssapi,publickey,password
+    PreferredAuthentications=gssapi-with-mic,publickey,password
