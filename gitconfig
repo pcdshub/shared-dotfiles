@@ -44,5 +44,8 @@
 [pull]
     ff = only
 
+[safe]
+    directory = *
+
 [svn]
     authorsfile=/afs/slac/g/cd/swe/git/repos/package/epics/modules/authors.txt
