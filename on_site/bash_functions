@@ -172,6 +172,28 @@ ipython_debug_entrypoint() {
     fi
 }
 
+# whichp library_name
+#   Determine where your Python library will be imported from. If you use
+#   ``import package_name``, use ``whichp package_name``.
+whichp ()
+{
+  echo "Python: $(which python)"
+  library="$1"
+  if [ -z "$library" ]; then
+    echo "Usage: whichp (library)" >&2
+    return
+  fi
+
+  python -c "
+import os
+import ${library}
+print(f'${library} is from: {${library}.__file__}')
+print(f'${library} version is', getattr(${library}, '__version__', 'unknown'))
+print(f'cd {os.path.dirname(${library}.__file__)}')
+"
+}
+
+
 # cdhutchp - go to the per-hutch hutch-python configuration directory.
 #   Usage: cdhutchp [hutch_name]
 #   Example: cdhutchp rix
