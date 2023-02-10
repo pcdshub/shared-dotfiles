@@ -71,13 +71,24 @@ git_sync_upstream() {
 
 
 # Watch a log file from a given IOC.
-#  Usage: ioclog (iocname)
+#  Usage: ioclog [iocname]
 #  Example: ioclog ioc-xpp-gige-las01
 #  Example: ioclog ioc-xpp-*-las01
 ioclog() {
+  if [ $# -ge 1 ]; then
     # shellcheck disable=SC2086 # allow for globbing of IOC names
     tail -n 50 -f /cds/data/iocData/$1/iocInfo/ioc.log
+  else
+    local ioc_dir
+    ioc_dir=$(_helper_pick_directory /cds/data/iocData)
+    if [ -z "$ioc_dir" ]; then
+      return
+    fi
+    history -s "ioclog $(basename "${ioc_dir}")"
+    tail -n 50 -f "${ioc_dir}/iocInfo/ioc.log"
+  fi
 }
+
 
 # Find a currently-deployed IOC with a bit more details:
 #  Usage: which_ioc [iocname]
