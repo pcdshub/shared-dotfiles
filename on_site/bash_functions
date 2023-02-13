@@ -71,13 +71,24 @@ git_sync_upstream() {
 
 
 # Watch a log file from a given IOC.
-#  Usage: ioclog (iocname)
+#  Usage: ioclog [iocname]
 #  Example: ioclog ioc-xpp-gige-las01
 #  Example: ioclog ioc-xpp-*-las01
 ioclog() {
+  if [ $# -ge 1 ]; then
     # shellcheck disable=SC2086 # allow for globbing of IOC names
     tail -n 50 -f /cds/data/iocData/$1/iocInfo/ioc.log
+  else
+    local ioc_dir
+    ioc_dir=$(_helper_pick_directory /cds/data/iocData)
+    if [ -z "$ioc_dir" ]; then
+      return
+    fi
+    history -s "ioclog $(basename "${ioc_dir}")"
+    tail -n 50 -f "${ioc_dir}/iocInfo/ioc.log"
+  fi
 }
+
 
 # Find a currently-deployed IOC with a bit more details:
 #  Usage: which_ioc [iocname]
@@ -171,6 +182,28 @@ ipython_debug_entrypoint() {
         set +x
     fi
 }
+
+# whichp library_name
+#   Determine where your Python library will be imported from. If you use
+#   ``import package_name``, use ``whichp package_name``.
+whichp ()
+{
+  echo "Python: $(which python)"
+  library="$1"
+  if [ -z "$library" ]; then
+    echo "Usage: whichp (library)" >&2
+    return
+  fi
+
+  python -c "
+import os
+import ${library}
+print(f'${library} is from: {${library}.__file__}')
+print(f'${library} version is', getattr(${library}, '__version__', 'unknown'))
+print(f'cd {os.path.dirname(${library}.__file__)}')
+"
+}
+
 
 # cdhutchp - go to the per-hutch hutch-python configuration directory.
 #   Usage: cdhutchp [hutch_name]
