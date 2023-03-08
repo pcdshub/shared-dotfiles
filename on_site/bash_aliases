@@ -132,4 +132,4 @@ alias pcdsconda='source pcds_conda'
 alias anaenvpy2='source /reg/g/psdm/etc/psconda.sh'
 alias anaenv='source /reg/g/psdm/etc/psconda.sh -py3'
 alias xppenv='source /cds/group/pcds/pyps/apps/hutch-python/xpp/xppenv'
-
+alias myconda='source /cds/home/e/espov/miniconda3/etc/profile.d/conda.sh'
