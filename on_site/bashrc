@@ -351,6 +351,9 @@ if [ -n "${THIS_HOST}" ]; then
     fi
 fi
 
+# clean up tools path. It should be /cds/sw/tools/bin (added above)
+pathpurge /reg/common/tools/bin
+
 # ***************
 # ** Now what? **
 # ***************
