@@ -99,6 +99,8 @@ source /cds/group/pcds/setup/epicsenv-cur.sh
 # Or read-write-execute for you and your group, and just read-execute for all
 # others.
 
+export PATH=$PATH:/cds/home/e/espov/bin
+
 if [ $(echo $HOSTNAME | grep -ic -e "psana" -e "mon0" -e "drp-srcf") -eq 1 ]
 then
     source /reg/g/psdm/etc/psconda.sh -py3 &> /dev/null
@@ -232,7 +234,7 @@ esac
 # ``pathmunge`` is a utility which will modify your PATH.  It adds a path
 # to the beginning of the variable PATH, which is where your shell looks for
 # executables and scripts.
-pathmunge /reg/common/tools/bin
+pathmunge /cds/sw/tools/bin
 # /reg/common/tools/bin contains scripts such as:
 #  * Tools for inspecting or interacting with released EPICS modules:
 #     - epics-checkout
@@ -245,7 +247,7 @@ pathmunge /reg/common/tools/bin
 #     - digiconfig
 #     - psipmi
 
-pathmunge /reg/g/pcds/engineering_tools/latest-released/scripts
+pathmunge /cds/group/pcds/engineering_tools/latest-released/scripts
 # /reg/g/pcds/engineering_tools/latest-released/scripts
 #  * General tools of use to ECS engineers
 #    For documentation, see: https://github.com/pcdshub/engineering_tools

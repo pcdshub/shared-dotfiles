@@ -53,6 +53,7 @@ alias psd='sshcd psdev'
 alias xppc='ssh -X xppopr@xpp-control'
 alias xppd='ssh -X xppopr@xpp-daq'
 alias mfxd='ssh -X mfxopr@mfx-daq'
+alias tos3df='ssh -J espov@s3dflogin.slac.stanford.edu psana'
 
 # *****************************
 # ** Python and hutch-python **
@@ -133,3 +134,10 @@ alias anaenvpy2='source /reg/g/psdm/etc/psconda.sh'
 alias anaenv='source /reg/g/psdm/etc/psconda.sh -py3'
 alias xppenv='source /cds/group/pcds/pyps/apps/hutch-python/xpp/xppenv'
 alias myconda='source /cds/home/e/espov/miniconda3/etc/profile.d/conda.sh'
+alias ami2env='source /cds/group/pcds/dist/pds/ami2-devel/setup_env_lcls1.sh'
+
+# Path alias
+alias add_pwd_to_python='export PYTHONPATH=$PWD'
+
+# Custom commands aliases
+alias myiftop='sudo iftop -m 1G'
