@@ -220,7 +220,7 @@ esac
 # ``pathmunge`` is a utility which will modify your PATH.  It adds a path
 # to the beginning of the variable PATH, which is where your shell looks for
 # executables and scripts.
-pathmunge /reg/common/tools/bin
+pathmunge /cds/sw/tools/bin
 # /reg/common/tools/bin contains scripts such as:
 #  * Tools for inspecting or interacting with released EPICS modules:
 #     - epics-checkout
@@ -336,6 +336,9 @@ if [ -n "${THIS_HOST}" ]; then
         source "$BASHRC_THIS_HOST"
     fi
 fi
+
+# clean up the /reg/common/tools/bin as it is causing issues with netconfig
+pathpurge /reg/common/tools/bin
 
 # ***************
 # ** Now what? **
