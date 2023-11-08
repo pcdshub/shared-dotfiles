@@ -101,7 +101,7 @@ $ echo 'source $HOME/dotfiles/on_site/bash_all.sh' >> $HOME/.bashrc
 ### Forking
 
 Advanced users may want to start their own dotfiles repository based on this
-one. We recommend that you version control your dotfiles. 
+one. We recommend that you version control your dotfiles.
 
 1. Fork pcdshub/shared-dotfiles to your-user/shared-dotfiles
 2. ```bash
