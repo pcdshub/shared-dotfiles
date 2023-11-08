@@ -99,6 +99,10 @@ have before running them.
 * ``pcds_conda`` source this to activate a production pcds conda environment.
 * ``pkg_release`` checks out a package from the pcdshub github at a particular
   tag.
+* ``plcprog`` launches remote desktop (xfreerdp) to connect to the PLC
+  programming node.  Related environment variable: ``$PLCPROG_RESOLUTION``
+  (default: 60%).  It will be backgrounded, so type ``fg`` to bring it to the
+  foreground.
 * ``pmgr`` parameter manager tool.
 * ``pydev_env`` Source this file to activate a development environment based on
   the latest shared environment and on past calls to pydev_register``.
