@@ -44,8 +44,8 @@ git_setup_fork() {
     echo "${usage}"
     return
   fi
-  REPO=`basename "${1}"`
-  UPSTREAM=`dirname "${1}"`
+  REPO=$(basename "${1}")
+  UPSTREAM=$(dirname "${1}")
   git clone --origin "${GITHUB_ORIGIN:-origin}" "git@github.com:${GITHUB_USERNAME:-${USER}}/${REPO}.git"
   git -C "${REPO}" remote add "${GITHUB_UPSTREAM:-upstream}" "git@github.com:${UPSTREAM}/${REPO}.git"
 }

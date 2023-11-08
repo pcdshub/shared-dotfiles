@@ -31,7 +31,7 @@ Host psbuild
     # psbuild-rhel7-01.
     #
     # The next line, ProxyJump, specifies that:
-    # * We "jump" (or go through) a host to reach the specified host here 
+    # * We "jump" (or go through) a host to reach the specified host here
     # * %r indicates we use the remote username as specified on the
     #   command-line - or as User here - and not our local $USER
     # * The ${PS_JUMP_HOST} means we use that environment variable to specify

@@ -152,7 +152,7 @@ _helper_get_host_info_json() {
 
     # shellcheck disable=SC2016
     all_host_metadata=$(
-        ${_PCDS_CONDA_FOR_UTILS}/bin/python -m whatrecord.plugins.netconfig |
+        "${_PCDS_CONDA_FOR_UTILS}/bin/python" -m whatrecord.plugins.netconfig |
         $jq '.metadata | [ to_entries[] | .key as $name | .value  + { "name": $name } ]'
     )
 
@@ -341,4 +341,3 @@ pythonpathmunge()
 	pathpurge "$to_add"
 	export PYTHONPATH=$to_add:$PYTHONPATH
 }
-

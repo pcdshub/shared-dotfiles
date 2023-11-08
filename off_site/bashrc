@@ -215,4 +215,3 @@ export GITHUB_USERNAME="${USER}"
 export GITHUB_UPSTREAM="upstream"
 export GITHUB_ORIGIN="origin"
 export GITHUB_MASTER="master"
-
