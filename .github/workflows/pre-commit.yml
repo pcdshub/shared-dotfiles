@@ -1,0 +1,39 @@
+name: pcds-ci-helpers
+
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - published
+
+jobs:
+  standard:
+    uses: pcdshub/pcds-ci-helpers/.github/workflows/pre-commit.yml@master
+    with:
+      args: "--all-files --show-diff-on-failure"
+      annotate: true
+
+  tests:
+    name: "Test suite"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        # The following allows for each run step to utilize ~/.bash_profile
+        # for setting up the per-step initial state.
+        # --login: a login shell. Source ~/.bash_profile
+        # -e: exit on first error
+        # -o pipefail: piped processes are important; fail if they fail
+        shell: bash --login -eo pipefail {0}
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        submodules: 'recursive'
+
+    - name: Run tests
+      run: |
+        cd tests
+        make
