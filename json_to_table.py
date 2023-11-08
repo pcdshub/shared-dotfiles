@@ -11,7 +11,7 @@ def string_for_table(value: Any, max_length: int = 80) -> str:
     """Fix the value for display in the table."""
     if isinstance(value, list):
         result = ", ".join(string_for_table(v) for v in value)
-    else: 
+    else:
         result = str(value)
 
     if len(result) > max_length:
