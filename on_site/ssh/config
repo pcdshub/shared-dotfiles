@@ -18,6 +18,13 @@ Host github.com
     RequestTTY no
     UpdateHostKeys yes
 
+Host plc-*
+    ForwardAgent no
+    ForwardX11 no
+    ForwardX11Trusted no
+    PreferredAuthentications=publickey,keyboard-interactive
+    User Administrator
+
 Host *
     ForwardAgent yes
     ForwardX11 yes
