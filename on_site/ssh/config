@@ -22,7 +22,7 @@ Host plc-*
     ForwardAgent no
     ForwardX11 no
     ForwardX11Trusted no
-    PreferredAuthentications=publickey,keyboard-interactive
+    PreferredAuthentications=keyboard-interactive
     User Administrator
 
 Host *
