@@ -23,7 +23,7 @@ Host plc-*
     ForwardX11 no
     ForwardX11Trusted no
     PreferredAuthentications=keyboard-interactive
-    User Administrator
+    User ecs-user
 
 Host *
     ForwardAgent yes
