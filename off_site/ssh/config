@@ -81,9 +81,6 @@ Host psbuild-socks
 Host pscron
     ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
 
-# s3df data center
-Host s3df
-    HostName s3dflogin.slac.stanford.edu
 
 
 # Additional hosts from netconfig, hopping through psbuild-rhel7:
