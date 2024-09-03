@@ -37,7 +37,7 @@ Host psbuild
     # * The ${PS_JUMP_HOST} means we use that environment variable to specify
     #   which host to jump through.
     # * The ${PS_JUMP_HOST=...} syntax provides a default host to jump through,
-    #   which we set to "pslogin" here.
+    #   which we set to "s3dflogin" here.
     ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
     # We can share local environment variables, if we choose:
     # SendEnv TMUX_SESSION_NAME
