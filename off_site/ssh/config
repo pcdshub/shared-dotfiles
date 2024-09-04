@@ -13,8 +13,8 @@ Host s3dflogin
     # ControlMaster auto
     # ControlPath ~/.SSH-%r@%h:%p
 
-Host pslogin-arch
-    HostName pslogin.slac.stanford.edu
+Host s3dflogin-arch
+    HostName s3dflogin.slac.stanford.edu
     # Archiver management interface:
     # use http://localhost:17665/mgmt/ui/index.html
     LocalForward localhost:17665 pscaa02:17665
