@@ -7,14 +7,14 @@
 # You should use it on your own laptop and *not* place this in your PCDS
 # home directory configuration.
 
-Host pslogin
-    HostName pslogin.slac.stanford.edu
-    # ControlMaster can allow you to multiplex pslogin connections!
+Host s3dflogin
+    HostName s3dflogin.slac.stanford.edu
+    # ControlMaster can allow you to multiplex s3dflogin connections!
     # ControlMaster auto
     # ControlPath ~/.SSH-%r@%h:%p
 
-Host pslogin-arch
-    HostName pslogin.slac.stanford.edu
+Host s3dflogin-arch
+    HostName s3dflogin.slac.stanford.edu
     # Archiver management interface:
     # use http://localhost:17665/mgmt/ui/index.html
     LocalForward localhost:17665 pscaa02:17665
@@ -37,23 +37,23 @@ Host psbuild
     # * The ${PS_JUMP_HOST} means we use that environment variable to specify
     #   which host to jump through.
     # * The ${PS_JUMP_HOST=...} syntax provides a default host to jump through,
-    #   which we set to "pslogin" here.
-    ProxyJump %r@${PS_JUMP_HOST=centos7}
+    #   which we set to "s3dflogin" here.
+    ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
     # We can share local environment variables, if we choose:
     # SendEnv TMUX_SESSION_NAME
 
 Host psbuild-rhel7
     HostName psbuild-rhel7-01
-    ProxyJump %r@${PS_JUMP_HOST=centos7}
+    ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
 
 Host psdev
     HostName psdev
-    ProxyJump %r@${PS_JUMP_HOST=centos7}
+    ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
 
 # plcprog-console access
 Host psbuild-plc
     HostName psbuild-rhel7
-    ProxyJump %r@${PS_JUMP_HOST=centos7}
+    ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
     ExitOnForwardFailure yes
     ForwardAgent no
     LocalForward localhost:3389 plcprog-console:3389
@@ -63,7 +63,7 @@ Host psbuild-plc
 
 Host psbuild-socks
     HostName psbuild-rhel7
-    ProxyJump %r@${PS_JUMP_HOST=centos7}
+    ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
     ForwardAgent no
     DynamicForward localhost:8080
     ExitOnForwardFailure yes
@@ -79,12 +79,8 @@ Host psbuild-socks
 
 # pscron - used for scheduling cron job tasks
 Host pscron
-    ProxyJump %r@${PS_JUMP_HOST=centos7}
+    ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
 
-# s3df data center
-Host s3df
-    HostName s3dflogin.slac.stanford.edu
-    ProxyJump %r@${PS_JUMP_HOST}
 
 
 # Additional hosts from netconfig, hopping through psbuild-rhel7:
