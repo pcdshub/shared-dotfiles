@@ -53,7 +53,8 @@ alias psd='sshcd psdev'
 alias xppc='ssh -X xppopr@xpp-control'
 alias xppd='ssh -X xppopr@xpp-daq'
 alias mfxd='ssh -X mfxopr@mfx-daq'
-alias tos3df='ssh -J espov@s3dflogin.slac.stanford.edu psana'
+#alias tos3df='ssh -J espov@s3dflogin.slac.stanford.edu psana'
+alias tos3df='ssh espov@s3dflogin.slac.stanford.edu'
 
 # *****************************
 # ** Python and hutch-python **
@@ -78,7 +79,7 @@ alias epd='cd /cds/group/pcds/epics/'
 alias daqd='cd /cds/group/pcds/dist/pds'
 alias daqlogs='/cds/group/pcds/pds/'
 alias screens='cd /cds/group/pcds/epics-dev/screens/'
-alias epicsd='cd /cds/group/pcds/epics/ioc/'
+alias iocd='cd /cds/group/pcds/epics/ioc/'
 alias smd_release='cd /cds/group/psdm/sw/tools/smalldata_tools'
 
 
@@ -123,9 +124,11 @@ alias cagetstring='caget -S'
 # file alias
 alias xppcnf='vim /cds/group/pcds/dist/pds/xpp/scripts/xpp.cnf'
 alias mfxcnf='vim /cds/group/pcds/dist/pds/mfx/scripts/mfx.cnf'
+alias cxicnf='vim /cds/group/pcds/dist/pds/cxi/scripts/cxi_0.cnf'
 
 # plg prog rdesktop
-alias plcprog='rdesktop -g 1920x1200 -u ${USER} plcprog-console'
+#alias plcprog='rdesktop -g 1920x1200 -u ${USER} plcprog-console'
+alias plcprog='xfreerdp -g 1920x1200 -u ${USER} plcprog-console'
 alias plcprog4k='rdesktop -g 3600x2000 -u ${USER} plcprog-console'
 
 # Env aliases
@@ -141,3 +144,4 @@ alias add_pwd_to_python='export PYTHONPATH=$PWD'
 
 # Custom commands aliases
 alias myiftop='sudo iftop -m 1G'
+alias swtool='/cds/group/pcds/pyps/apps/switchtool/latest/switchtool'

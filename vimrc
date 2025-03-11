@@ -46,10 +46,10 @@ set wrap                               " wrap text at the end of your screen (->
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 set wildignore+=*\\tmp\\*,*.exe
 
-if has('termguicolors')
-  " Depending on your terminal, you might get 24-bit color support
-  set termguicolors
-endif
+"if has('termguicolors')
+"  " Depending on your terminal, you might get 24-bit color support
+"  set termguicolors
+"endif
 
 if !has('nvim') && &term =~ '^screen'
     " tmux knows the extended mouse mode
