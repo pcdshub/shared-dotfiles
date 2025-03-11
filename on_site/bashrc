@@ -78,6 +78,9 @@ source /cds/group/pcds/setup/epics-ca-env.sh
 # As of the time of writing, this is a shortcut to: epicsenv-7.0.2-2.0.sh
 source /cds/group/pcds/setup/epicsenv-cur.sh
 
+# This includes PLC programming helpers:
+source /cds/group/pcds/setup/plcenv.sh
+
 # The above includes the following common shortcuts, like find_pv and all
 # of the per-hutch screen shortcuts like "lfe" or "cxi".
 #
@@ -350,6 +353,7 @@ if [ -n "${THIS_HOST}" ]; then
         source "$BASHRC_THIS_HOST"
     fi
 fi
+
 
 # clean up tools path. It should be /cds/sw/tools/bin (added above)
 pathpurge /reg/common/tools/bin

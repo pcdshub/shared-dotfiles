@@ -14,18 +14,17 @@ repos:
   - id: check-xml
   - id: check-yaml
 
-repos:
--   repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.8.0
-    hooks:
-    - id: shellcheck
-      types: []  # Skips non-.sh files without this
-      files: |
-        (?x)^(
-            on_site/bash.*$|
-            off_site/bash.*$|
-            tests/.*\.sh$|
-            .*\.sh$
-        )$
-      exclude: tests/_shellcheck_bad.sh
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.9.0.6
+  hooks:
+  - id: shellcheck
+    types: []  # Skips non-.sh files without this
+    files: |
+      (?x)^(
+          on_site/bash.*$|
+          off_site/bash.*$|
+          tests/.*\.sh$|
+          .*\.sh$
+      )$
+    exclude: tests/_shellcheck_bad.sh
 #     args: ["--severity=warning"]  # Optionally only show errors and warnings
