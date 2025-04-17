@@ -46,6 +46,10 @@ Host psbuild-rhel7
     HostName psbuild-rhel7-01
     ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
 
+Host psbuild-rocky9
+    HostName psbuild-rocky9
+    ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
+
 Host psdev
     HostName psdev
     ProxyJump %r@${PS_JUMP_HOST=s3dflogin}
