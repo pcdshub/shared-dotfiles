@@ -1,12 +1,12 @@
 # default group
-* @pcdshub/shell-reviewers
+* @pcdshub/shell-reviewers @pcdshub/software-admin
 
 # language-specific group(s)
 ## SHELL files
-*.sh @pcdshub/shell-reviewers
-*.zsh @pcdshub/shell-reviewers
-*.csh @pcdshub/shell-reviewers
-*.bash @pcdshub/shell-reviewers
+*.sh @pcdshub/shell-reviewers @pcdshub/software-admin
+*.zsh @pcdshub/shell-reviewers @pcdshub/software-admin
+*.csh @pcdshub/shell-reviewers @pcdshub/software-admin
+*.bash @pcdshub/shell-reviewers @pcdshub/software-admin
 
 # github folder holds administrative files
 .github/** @pcdshub/software-admin
